@@ -299,8 +299,7 @@ As a user, I want to view my individual balance across all groups so that I know
   "id": 1,
   "name": "John Doe",
   "username": "johndoe",
-  "email": "john@example.com",
-  "token": "jwt-token"
+  "email": "john@example.com"
 }
 
 ### Demo User
