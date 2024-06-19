@@ -9,12 +9,12 @@ class Balance(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    balance = db.Column(db.Numeric(10, 2), nullable=False)
+    balance = db.Column(db.Float, nullable=False)
 
     def to_dict(self):
         return {
             'id': self.id,
             'group_id': self.group_id,
             'user_id': self.user_id,
-            'balance': str(self.balance)
+            'balance': self.balance
         }

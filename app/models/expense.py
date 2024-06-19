@@ -9,11 +9,11 @@ class Expense(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'), nullable=False)
-    description = db.Column(db.String(200), nullable=False)
-    amount = db.Column(db.Numeric(10, 2), nullable=False)
-    date = db.Column(db.DateTime)
+    description = db.Column(db.String, nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
     payer_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    split_method = db.Column(db.String(50), nullable=False)
+    split_method = db.Column(db.String, nullable=False)
 
     def to_dict(self):
         return {

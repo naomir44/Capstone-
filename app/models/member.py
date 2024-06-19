@@ -9,7 +9,7 @@ class Member(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'), nullable=False)
-    role = db.Column(db.String(50), nullable=False)
+    role = db.Column(db.String, nullable=False)
 
     def to_dict(self):
         return {

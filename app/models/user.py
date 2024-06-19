@@ -11,20 +11,22 @@ class User(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    username = db.Column(db.String(40), nullable=False, unique=True)
+    username = db.Column(db.String, nullable=False, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
-    hashed_password = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+
     groups = db.relationship('Group', backref='creator', lazy=True)
+    balances = db.relationship('Balance', backref='user', lazy=True)
     expenses = db.relationship('Expense', backref='payer', lazy=True)
     members = db.relationship('Member', backref='user', lazy=True)
 
     @property
     def password(self):
-        return self.hashed_password
+        return self.password
 
     @password.setter
     def password(self, password):
-        self.hashed_password = generate_password_hash(password)
+        self.password = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
