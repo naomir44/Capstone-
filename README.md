@@ -141,6 +141,7 @@ Expense Splitter is a web application that helps users manage shared expenses am
 -   **Sign Up**: Create a new account.
 -   **Log In**: Access your account.
 -   **Log Out**: Securely log out of your account.
+-   **Demo User**: Access the application with a demo account.
 
 ### Group Management
 
@@ -179,6 +180,10 @@ As a new user, I want to create an account so that I can start using the applica
 #### Log In
 
 As a registered user, I want to log into my account so that I can manage my groups and expenses.
+
+### Demo User
+
+As a demo user, I want to use a demo account so I can explore the application without registering.
 
 #### Log Out
 
@@ -298,6 +303,13 @@ As a user, I want to view my individual balance across all groups so that I know
   "token": "jwt-token"
 }
 
+### Demo User
+
+**Demo User Credentials**:
+{
+  "email": "demo@aa.io",
+  "password": "password"
+}
 
 #### Log Out
 
