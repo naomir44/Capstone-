@@ -11,22 +11,21 @@ class User(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    username = db.Column(db.String, nullable=False, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
-    password = db.Column(db.String(255), nullable=False)
+    hashed_password = db.Column(db.String(255), nullable=False)
 
-    groups = db.relationship('Group', backref='creator', lazy=True)
-    balances = db.relationship('Balance', backref='user', lazy=True)
-    expenses = db.relationship('Expense', backref='payer', lazy=True)
-    members = db.relationship('Member', backref='user', lazy=True)
+    groups = db.relationship('Group', back_populates='creator', cascade='all, delete-orphan')
+    balances = db.relationship('Balance', back_populates='user', cascade='all, delete-orphan')
+    expenses = db.relationship('Expense', back_populates='payer', cascade='all, delete-orphan')
+    members = db.relationship('Member', back_populates='user', cascade='all, delete-orphan')
 
     @property
     def password(self):
-        return self.password
+        return self.hashed_password
 
     @password.setter
     def password(self, password):
-        self.password = generate_password_hash(password)
+        self.hashed_password = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
@@ -35,6 +34,5 @@ class User(db.Model, UserMixin):
         return {
             'id': self.id,
             'name': self.name,
-            'username': self.username,
             'email': self.email
         }

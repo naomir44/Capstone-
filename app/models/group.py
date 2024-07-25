@@ -1,4 +1,3 @@
-from datetime import datetime
 from .db import db, environment, SCHEMA
 
 class Group(db.Model):
@@ -10,14 +9,17 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     created_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    created_at = db.Column(db.DateTime)
-    members = db.relationship('Member', backref='group', lazy=True)
-    expenses = db.relationship('Expense', backref='group', lazy=True)
+
+    creator = db.relationship('User', back_populates='groups')
+    members = db.relationship('Member', back_populates='group', cascade='all, delete-orphan')
+    expenses = db.relationship('Expense', back_populates='group', cascade='all, delete-orphan')
 
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
             'created_by': self.created_by,
-            'created_at': self.created_at.isoformat()
+            'members': [member.to_dict() for member in self.members],
+            'expenses': [expense.to_dict() for expense in self.expenses],
+            'creator': self.creator.to_dict()
         }
