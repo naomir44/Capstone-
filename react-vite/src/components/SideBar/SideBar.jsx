@@ -1,23 +1,37 @@
-import Groups from "../Groups/Groups";
-import './SideBar.css'
-import { NavLink } from "react-router-dom";
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import Groups from '../Groups/Groups';
+import CreateGroupFormModal from '../CreateGroupFormModal/CreateGroupFormModal';
+import './SideBar.css';
 
 const SideBar = () => {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCreateGroupClick = (e) => {
+    e.preventDefault();
+    setShowModal(true);
+  };
+
   return (
     <>
-    <div className='sidebar'>
-    <ul>
-        <li>
-          <NavLink to="/">Home</NavLink>
-        </li>
-      </ul>
-      <ul>
-        <li>
-          <Groups />
-        </li>
-      </ul>
-    </div>
+      <div className='sidebar'>
+        <ul>
+          <li>
+            <NavLink to="/">Home</NavLink>
+          </li>
+          <li>
+            <a href="#" onClick={handleCreateGroupClick}>Create New Group</a>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <Groups />
+          </li>
+        </ul>
+      </div>
+      <CreateGroupFormModal showModal={showModal} setShowModal={setShowModal} />
     </>
-  )
-}
+  );
+};
+
 export default SideBar;

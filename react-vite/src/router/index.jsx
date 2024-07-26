@@ -4,6 +4,7 @@ import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import LandingPage from '../components/LandingPage/LandingPage';
 import GroupDetails from '../components/GroupDetails/GroupDetails';
+import CreateGroupFormModal from '../components/CreateGroupFormModal/CreateGroupFormModal';
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
       {
         path: "groups/:groupId",
         element: <GroupDetails />
+      },
+      {
+        path: "groups/new",
+        element: <CreateGroupFormModal />
       }
     ],
   },

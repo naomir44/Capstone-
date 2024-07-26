@@ -5,3 +5,4 @@ from .balance import Balance
 from .expense import Expense
 from .group import Group
 from .member import Member
+from .image import Image

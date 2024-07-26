@@ -18,6 +18,7 @@ class User(db.Model, UserMixin):
     balances = db.relationship('Balance', back_populates='user', cascade='all, delete-orphan')
     expenses = db.relationship('Expense', back_populates='payer', cascade='all, delete-orphan')
     members = db.relationship('Member', back_populates='user', cascade='all, delete-orphan')
+    images = db.relationship('Image', back_populates='user')
 
     @property
     def password(self):
@@ -34,5 +35,7 @@ class User(db.Model, UserMixin):
         return {
             'id': self.id,
             'name': self.name,
-            'email': self.email
+            'email': self.email,
+            'groups': [group.to_dict() for group in self.groups],
+            'images': [image.to_dict() for image in self.images]
         }
