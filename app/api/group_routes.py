@@ -28,7 +28,7 @@ def create_group():
     name = data.get('name')
     description = data.get('description')
     image_url = data.get('image_url')
-    member_emails = data.get('members', [])
+    member_ids = data.get('members', [])
 
     new_group = Group(
         name=name,
@@ -39,11 +39,13 @@ def create_group():
     db.session.add(new_group)
     db.session.commit()
 
-    for email in member_emails:
-        user = User.query.filter_by(email=email.strip()).first()
+    for member_id in member_ids:
+        user = User.query.get(member_id)
         if user:
-            member = Member(user_id=user.id, group_id=new_group.id)
+            member = Member(user_id=user.id, group_id=new_group.id, role='member')
             db.session.add(member)
+
+    db.session.commit()
 
     return jsonify(new_group.to_dict()), 201
 
@@ -51,22 +53,26 @@ def create_group():
 @group_bp.route('/<int:group_id>/', methods=["PUT"])
 @login_required
 def update_group(group_id):
+    group = Group.query.get_or_404(group_id)
     data = request.get_json()
 
-    if not data:
-        abort(400, description="Invalid data")
-
-    group = Group.query.get(group_id)
-    if not group:
-        abort(404, description="Group not found")
-
-    if group.created_by != current_user.id:
-        abort(403, description="Not authorized to update this group")
+    if group.creator.id != current_user.id:
+        abort(403, description="You are not allowed to update this group")
 
     group.name = data.get('name', group.name)
+    group.description = data.get('description', group.description)
+    group.image_url = data.get('image_url', group.image_url)
+
+    member_ids = data.get('members', [])
+
+    group.members = []
+    for member_id in member_ids:
+        user = User.query.get(member_id)
+        if user:
+            member = Member(user_id=user.id, group_id=group.id, role='member')
+            db.session.add(member)
 
     db.session.commit()
-
     return jsonify(group.to_dict()), 200
 
 #Delete a group

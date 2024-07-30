@@ -59,13 +59,13 @@ export const fetchGroupDeets = (groupId) => async (dispatch) => {
   }
 }
 
-export const createGroupThunk = (group) => async (dispatch) => {
+export const createGroupThunk = (groupData) => async (dispatch) => {
   const response = await fetch('/api/groups/new/', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
       },
-      body: JSON.stringify(group),
+      body: JSON.stringify(groupData),
   });
 
   if (response.ok) {

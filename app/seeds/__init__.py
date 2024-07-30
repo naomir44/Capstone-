@@ -5,7 +5,7 @@ from .members import seed_members, undo_members
 from .expenses import seed_expenses, undo_expenses
 from .balances import seed_balances, undo_balances
 from .images import seed_images, undo_images
-
+from .friendships import seed_friendships, undo_friendships
 from app.models.db import db, environment, SCHEMA
 
 # Creates a seed group to hold our commands
@@ -21,6 +21,7 @@ def seed():
         # command, which will  truncate all tables prefixed with
         # the schema name (see comment in users.py undo_users function).
         # Make sure to add all your other model's undo functions below
+        undo_friendships()
         undo_images()
         undo_balances()
         undo_expenses()
@@ -33,6 +34,7 @@ def seed():
     seed_expenses()
     seed_balances()
     seed_images()
+    seed_friendships()
     # Add other seed functions here
 
 
@@ -45,4 +47,5 @@ def undo():
     undo_expenses()
     undo_balances()
     undo_images()
+    undo_friendships()
     # Add other undo functions here

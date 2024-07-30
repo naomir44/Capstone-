@@ -13,12 +13,22 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
+    profile_picture = db.Column(db.String, nullable=True)
 
     groups = db.relationship('Group', back_populates='creator', cascade='all, delete-orphan')
     balances = db.relationship('Balance', back_populates='user', cascade='all, delete-orphan')
     expenses = db.relationship('Expense', back_populates='payer', cascade='all, delete-orphan')
     members = db.relationship('Member', back_populates='user', cascade='all, delete-orphan')
     images = db.relationship('Image', back_populates='user')
+    # friends = db.relationship('Friendship', foreign_keys=['Friendship.user_id', 'Friendship.friend_id'], back_populates='user')
+
+    friends = db.relationship(
+        'Friendship',
+        primaryjoin="or_(User.id == Friendship.user_id, User.id == Friendship.friend_id)",
+        back_populates="user",
+        cascade='all, delete-orphan'
+    )
+
 
     @property
     def password(self):
@@ -36,6 +46,8 @@ class User(db.Model, UserMixin):
             'id': self.id,
             'name': self.name,
             'email': self.email,
+            'profile_picture': self.profile_picture,
             'groups': [group.to_dict() for group in self.groups],
-            'images': [image.to_dict() for image in self.images]
+            'images': [image.to_dict() for image in self.images],
+            'friends': [friendship.to_dict() for friendship in self.friends]
         }

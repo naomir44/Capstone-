@@ -15,6 +15,8 @@ const GroupDetails = () => {
   const [showUpdateModal, setShowUpdateModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
+  console.log(currentUser)
+
   useEffect(() => {
     dispatch(fetchGroupDeets(groupId))
   },[dispatch, groupId])
@@ -31,6 +33,9 @@ const handleDeleteGroupClick = () => {
   setShowDeleteModal(true)
 }
 
+if (!group) {
+  return <h1>Loading...</h1>
+}
   return (
     <div className="group-deets-container">
       <div>{group.creator.name}</div>
@@ -54,7 +59,7 @@ const handleDeleteGroupClick = () => {
           <button onClick={handleDeleteGroupClick}>Delete Group</button>
           </>
       )}
-      <UpdateGroupFormModal showModal={showUpdateModal} setShowModal={setShowUpdateModal} />
+      <UpdateGroupFormModal showModal={showUpdateModal} setShowModal={setShowUpdateModal} groupId={groupId} />
       <DeleteGroupModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} groupId={groupId} />
     </div>
   );
