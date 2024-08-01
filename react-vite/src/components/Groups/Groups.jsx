@@ -13,8 +13,9 @@ const Groups = () => {
   },[dispatch])
 
   const userGroups = groups.filter(group =>
+    group.created_by === currentUser.id ||
     group.members.some(member => member.user_id === currentUser.id)
-  );
+);
 
   return (
     <>

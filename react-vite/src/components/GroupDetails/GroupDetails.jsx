@@ -43,6 +43,10 @@ const GroupDetails = () => {
         <div className="group-deets-container">
             <div className="group-deets-header">
                 <h2 className="group-name-in-group-deets">{group.name}</h2>
+                <div className="group-creator">
+                    <h3>Admin:</h3>
+                    {group.creator.name}
+                </div>
                 <div className="group-members">
                     <h3>Members:</h3>
                     {group.members?.map(member => (

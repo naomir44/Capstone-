@@ -1,14 +1,20 @@
 from flask import Blueprint, jsonify, request, abort
 from flask_login import login_required, current_user
 from app.models import Group, User, Member, db
+from sqlalchemy import or_
 
 group_bp = Blueprint('groups', __name__)
 
 #Get user groups
 @group_bp.route('/')
 def get_groups():
-  groups = Group.query.join(Member).filter(Member.user_id == current_user.id).all()
-  return jsonify([group.to_dict() for group in groups])
+    groups = Group.query.join(Member).filter(
+        or_(
+            Member.user_id == current_user.id,
+            Group.created_by == current_user.id
+        )
+    ).all()
+    return jsonify([group.to_dict() for group in groups])
 
 #Get group details
 @group_bp.route('/<int:id>/')
@@ -37,12 +43,12 @@ def create_group():
         image_url=image_url
         )
     db.session.add(new_group)
-    db.session.commit()
+    # db.session.commit()
 
     for member_id in member_ids:
         user = User.query.get(member_id)
         if user:
-            member = Member(user_id=user.id, group_id=new_group.id, role='member')
+            member = Member(user_id=user.id, group_id=new_group.id)
             db.session.add(member)
 
     db.session.commit()
@@ -74,7 +80,7 @@ def update_group(group_id):
     for member_id in new_member_ids:
         user = User.query.get(member_id)
         if user:
-            member = Member(user_id=user.id, group_id=group.id, role='member')
+            member = Member(user_id=user.id, group_id=group.id)
             db.session.add(member)
     #Remove old members
     for member_id in removed_member_ids:

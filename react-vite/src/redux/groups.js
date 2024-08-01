@@ -59,20 +59,23 @@ export const fetchGroupDeets = (groupId) => async (dispatch) => {
   }
 }
 
-export const createGroupThunk = (groupData) => async (dispatch) => {
+export const createGroupThunk = (group) => async (dispatch) => {
+  try {
   const response = await fetch('/api/groups/new/', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
       },
-      body: JSON.stringify(groupData),
+      body: JSON.stringify(group),
   });
 
   if (response.ok) {
       const newGroup = await response.json();
+      console.log('new group:',newGroup)
       dispatch(createGroup(newGroup));
       return newGroup;
-  } else {
+  }
+  } catch {
       const error = await response.json();
       console.error('Failed to create group:', error);
   }
@@ -128,8 +131,7 @@ function groupsReducer(state = initialState, action) {
   }
   case CREATE_GROUP: {
     const newState = { ...state }
-    const group = action.group
-    newState[group.id] = group
+    newState[action.group.id] = action.group;
     return newState
   }
   case UPDATE_GROUP: {
