@@ -1,6 +1,6 @@
-import React, { useState} from "react";
+import { useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addFriendThunk, fetchFriendRequests } from "../../redux/friends";
+import { addFriendThunk, fetchFriendRequests, fetchFriends } from "../../redux/friends";
 
 const AddFriend = () => {
   const dispatch = useDispatch()
@@ -16,7 +16,8 @@ const AddFriend = () => {
     } else {
       setEmail('')
       setError('')
-      dispatch(fetchFriendRequests(user.id))
+      await dispatch(fetchFriendRequests(user.id))
+      await dispatch(fetchFriends(user.id))
     }
   };
 

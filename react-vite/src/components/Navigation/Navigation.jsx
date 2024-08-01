@@ -1,5 +1,3 @@
-import { NavLink } from "react-router-dom";
-import React, { useState } from "react";
 import SideBar from "../SideBar";
 import "./Navigation.css";
 import OpenModalMenuItem from "./OpenModalMenuItem";
@@ -7,14 +5,17 @@ import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import { thunkLogout } from "../../redux/session";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Navigation() {
   const user = useSelector(state => state.session.user)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const logout = (e) => {
     e.preventDefault();
     dispatch(thunkLogout());
+    navigate('/')
   };
 
   return (

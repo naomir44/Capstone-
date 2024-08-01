@@ -1,4 +1,61 @@
 .group-deets-container {
+  width: calc(100% - 250px);
+  margin-left: 250px;
+  padding: 20px;
+}
+
+.group-deets-header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.group-deets-members {
+  flex-grow: 1;
+}
+
+.group-deets-member-item {
+  display: inline-block;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.group-deets-maker-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.expenses-section-group-deets {
+  margin-top: 20px;
+}
+
+.expense-item-in-group-deets {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.expense-details-in-group-deets {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.payments-in-group-deets {
+  margin-top: 10px;
+}
+
+.payment-item-in-group-deets {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #ccc;
+  padding-top: 5px;
+  margin-top: 5px;
 }

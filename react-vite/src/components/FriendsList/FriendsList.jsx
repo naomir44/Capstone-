@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFriends, deleteFriendThunk } from '../../redux/friends';
 
@@ -8,7 +8,7 @@ const FriendsList = () => {
     const friends = useSelector(state => state.friends.list);
 
     const requestPending = (friend) => {
-        const friendship = friend.friends?.find(f => f.friend_id === user.id || f.user_id === user.id);
+        const friendship = friend.friendships?.find(f => f.friend_id === user.id || f.user_id === user.id);
         return friendship?.status === 'pending';
     }
 

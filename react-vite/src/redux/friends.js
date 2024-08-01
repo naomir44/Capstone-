@@ -1,13 +1,13 @@
-const GET_FRIENDS = 'friends/getFriends';
+const GET_USER_FRIENDS = 'friends/getUserFriends';
 const ADD_FRIEND = 'friends/addFriend';
 const GET_FRIEND_REQUESTS = 'friends/getFriendRequests';
 const ACCEPT_FRIEND = 'friends/acceptFriend';
 const RECEIVE_FRIEND_REQUEST = 'friends/receiveFriendRequest';
 const DELETE_FRIEND = 'friends/deleteFriend';
 
-const getFriends = friends => {
+const getUserFriends = friends => {
   return {
-    type: GET_FRIENDS,
+    type: GET_USER_FRIENDS,
     friends
   }
 }
@@ -33,23 +33,28 @@ const acceptFriend = friend => {
   };
 };
 
-const receiveFriendRequest = friendRequest => ({
+const receiveFriendRequest = friendRequest => {
+  return {
   type: RECEIVE_FRIEND_REQUEST,
   friendRequest
-});
+  }
+};
 
-const deleteFriend = friendId => ({
+const deleteFriend = friendId => {
+return {
   type: DELETE_FRIEND,
   friendId
-});
+  }
+};
+
 
 export const fetchFriends = () => async (dispatch) => {
   const response = await fetch('/api/friendships/all/')
 
   if (response.ok) {
     const friends = await response.json()
-    console.log(friends)
-    dispatch(getFriends(friends))
+
+    dispatch(getUserFriends(friends))
     return friends
   } else {
     console.error('Failed to fetch friends')
@@ -96,7 +101,6 @@ export const acceptFriendThunk = (friend_id) => async (dispatch) => {
 
   if (response.ok) {
       const data = await response.json();
-      console.log(data)
       dispatch(acceptFriend(data));
       dispatch(fetchFriends());
       return data;
@@ -126,7 +130,7 @@ const initialState = {
 }
 const friendsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_FRIENDS:
+    case GET_USER_FRIENDS:
       return {
         ...state,
         list: action.friends
