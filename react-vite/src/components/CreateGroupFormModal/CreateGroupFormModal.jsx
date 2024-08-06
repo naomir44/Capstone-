@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createGroupThunk } from '../../redux/groups'
 import './CreateGroupFormModal.css';
+import { useNavigate } from 'react-router-dom';
 
 const CreateGroupFormModal = ({ showModal, setShowModal }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const friends = useSelector(state => state.session.user.friendships)
     const currentUser = useSelector(state => state.session.user);
     const acceptedFriends = friends.filter(friend => friend.status === "accepted");
@@ -23,25 +25,17 @@ const CreateGroupFormModal = ({ showModal, setShowModal }) => {
             image_url: imageUrl
         };
 
-        console.log('Submitting new group:', newGroup);
-
         const response = await dispatch(createGroupThunk(newGroup));
-        console.log('Create group response:', response);
         if (response) {
             setName('');
             setDescription('')
             setSelectedFriends([])
             setImageUrl('')
             setShowModal(false)
+            navigate(`/groups/${response.id}`)
         } else {
             console.log('Failed to create group')
         }
-        // dispatch(createGroupThunk(newGroup));
-        // setName('');
-        // setDescription('');
-        // setSelectedFriends([]);
-        // setImageUrl('');
-        // setShowModal(false);
     };
 
     const handleFriendSelection = (friendId) => {

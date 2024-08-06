@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateExpenseThunk } from '../../redux/expense';
+import { fetchGroupDeets } from '../../redux/groups';
 
-const UpdateExpenseForm = ({ expense }) => {
+const UpdateExpenseForm = ({ expense, groupId }) => {
     const dispatch = useDispatch();
     const [description, setDescription] = useState(expense.description);
     const [amount, setAmount] = useState(expense.amount);
@@ -13,14 +14,13 @@ const UpdateExpenseForm = ({ expense }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const updatedExpense = {
-            id: expense.id,
-            group_id: expense.group_id,
             description,
             amount: parseFloat(amount),
             date,
             split_method: splitMethod
         };
-        dispatch(updateExpenseThunk(updatedExpense));
+        dispatch(updateExpenseThunk(updatedExpense, expense.id));
+        dispatch(fetchGroupDeets(groupId))
         setShowForm(false);
     };
 

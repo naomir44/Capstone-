@@ -8,14 +8,9 @@ const DeleteGroupModal = ({ showModal, setShowModal, groupId }) => {
     const navigate = useNavigate();
 
     const handleDelete = async () => {
-        const result = await dispatch(deleteGroupThunk(groupId));
-        console.log(`Deleting group with ID: ${groupId}`);
-        if (result.success) {
+        await dispatch(deleteGroupThunk(groupId));
             setShowModal(false);
-            navigate('/');
-        } else {
-            alert(result.error);
-        }
+            navigate('/')
     };
 
     if (!showModal) return null;

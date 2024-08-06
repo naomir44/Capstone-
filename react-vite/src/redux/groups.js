@@ -71,13 +71,11 @@ export const createGroupThunk = (group) => async (dispatch) => {
 
   if (response.ok) {
       const newGroup = await response.json();
-      console.log('new group:',newGroup)
       dispatch(createGroup(newGroup));
       return newGroup;
   }
   } catch {
-      const error = await response.json();
-      console.error('Failed to create group:', error);
+      console.error('Failed to create group:');
   }
 };
 
@@ -104,14 +102,11 @@ export const deleteGroupThunk = (groupId) => async (dispatch) => {
   const response = await fetch(`/api/groups/${groupId}/`, {
     method: 'DELETE',
   });
-console.log('Recieved response:', response);
   if (response.ok) {
     dispatch(deleteGroup(groupId))
-    return {success: true }
+    return
   } else {
-    const error = await response.json()
-    console.error('Failed to delete group:', error);
-    return { success: false, error }
+    console.error('Failed to delete group:');
   }
 }
 

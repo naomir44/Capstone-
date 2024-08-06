@@ -24,7 +24,7 @@ const AddFriend = () => {
   return (
     <form onSubmit={handleSubmit}>
       <label>
-        Friend's Email:
+        Friend&apos;s Email:
         <input type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}

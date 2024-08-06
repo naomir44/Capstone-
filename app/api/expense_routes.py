@@ -41,20 +41,22 @@ def add_expense():
   return jsonify(new_expense.to_dict()), 201
 
 # Update an expense
-@expense_bp.route('/<int:expense_id>/', methods=["PUT"])
+@expense_bp.route('/update/<int:expense_id>/', methods=["PUT"])
 @login_required
 def update_expense(expense_id):
     data = request.get_json()
     expense = Expense.query.get_or_404(expense_id)
     expense.description = data.get('description', expense.description)
     expense.amount = data.get('amount', expense.amount)
-    expense.date = data.get('date', expense.date)
+    date_str=data.get('date')
+    date = datetime.strptime(date_str, "%Y-%m-%d").date()
+    expense.date = date
     expense.split_method = data.get('split_method', expense.split_method)
     db.session.commit()
     return jsonify(expense.to_dict()), 200
 
 # Delete an expense
-@expense_bp.route('/<int:expense_id>/', methods=["DELETE"])
+@expense_bp.route('/delete/<int:expense_id>/', methods=["DELETE"])
 @login_required
 def delete_expense(expense_id):
     expense = Expense.query.get_or_404(expense_id)

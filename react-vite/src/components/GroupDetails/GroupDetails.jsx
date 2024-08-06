@@ -7,6 +7,7 @@ import DeleteGroupModal from "../DeleteGroupModal/DeleteGroupModal";
 import UpdateExpenseForm from "../UpdateExpenseForm/UpdateExpenseForm";
 import AddExpenseFormModal from "../AddExpenseFormModal/AddExpenseFormModal";
 import './GroupDetails.css';
+import DeleteExpenseModal from "../DeleteExpenseModal/DeleteExpenseModal";
 
 const GroupDetails = () => {
     let { groupId } = useParams();
@@ -17,7 +18,7 @@ const GroupDetails = () => {
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
-
+    const [deleteExpenseId, setDeleteExpenseId] = useState(null);
 
     useEffect(() => {
         dispatch(fetchGroupDeets(groupId));
@@ -37,6 +38,14 @@ const GroupDetails = () => {
 
     const handleAddExpenseClick = () => {
         setShowAddExpenseModal(true);
+    };
+
+    const handleDeleteExpenseClick = (expenseId) => {
+        setDeleteExpenseId(expenseId);
+    };
+
+    const handleCloseDeleteExpenseModal = () => {
+        setDeleteExpenseId(null);
     };
 
     return (
@@ -74,7 +83,11 @@ const GroupDetails = () => {
                         <div key={expense.id} className="expense-item-in-group-deets">
                             <div className="expense-details-in-group-deets">
                                 <span>{expense.description}: ${expense.amount}</span>
-                                <UpdateExpenseForm expense={expense} />
+                                <UpdateExpenseForm expense={expense} groupId={groupId}/>
+                                <button onClick={() => handleDeleteExpenseClick(expense.id)}>Delete Expense</button>
+                                {deleteExpenseId === expense.id && (
+                                    <DeleteExpenseModal showModal={deleteExpenseId === expense.id} setShowModal={handleCloseDeleteExpenseModal} expenseId={expense.id} groupId={groupId}/>
+                                )}
                             </div>
                             <div className="payments-in-group-deets">
                                 <h4>Payments</h4>

@@ -63,7 +63,7 @@ export const addExpenseThunk = (expense, groupId) => async (dispatch) => {
   }
 };
 
-export const updateExpenseThunk = (expenseId, updatedData) => async (dispatch) => {
+export const updateExpenseThunk = (updatedData, expenseId) => async (dispatch) => {
   const response = await fetch(`/api/expenses/update/${expenseId}/`, {
       method: 'PUT',
       headers: {
@@ -75,6 +75,7 @@ export const updateExpenseThunk = (expenseId, updatedData) => async (dispatch) =
   if (response.ok) {
       const updatedExpense = await response.json();
       dispatch(updateExpense(updatedExpense));
+      return updatedExpense
   } else {
       console.error('Failed to update expense');
   }
@@ -87,6 +88,7 @@ export const deleteExpenseThunk = (expenseId) => async (dispatch) => {
 
   if (response.ok) {
       dispatch(deleteExpense(expenseId));
+      return
   } else {
       console.error('Failed to delete expense');
   }
