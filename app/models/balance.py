@@ -12,7 +12,6 @@ class Balance(db.Model):
     balance = db.Column(db.Float, nullable=False)
 
     user = db.relationship('User', back_populates='balances')
-    group = db.relationship('Group', backref='balances')
 
     def to_dict(self):
         return {

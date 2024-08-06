@@ -43,7 +43,6 @@ def create_group():
         image_url=image_url
         )
     db.session.add(new_group)
-    # db.session.commit()
 
     for member_id in member_ids:
         user = User.query.get(member_id)
@@ -71,18 +70,18 @@ def update_group(group_id):
 
     member_ids = data.get('members', [])
 
-   #Update group members
+   #update group members
     existing_member_ids = {member.user_id for member in group.members}
     new_member_ids = set(member_ids) - existing_member_ids
     removed_member_ids = existing_member_ids - set(member_ids)
 
-    #Add new members
+    #add new members
     for member_id in new_member_ids:
         user = User.query.get(member_id)
         if user:
             member = Member(user_id=user.id, group_id=group.id)
             db.session.add(member)
-    #Remove old members
+    #remove old members
     for member_id in removed_member_ids:
         member = Member.query.filter_by(user_id=member_id, group_id=group.id).first()
         if member:
@@ -92,17 +91,38 @@ def update_group(group_id):
     return jsonify(group.to_dict()), 200
 
 #Delete a group
+# @group_bp.route('/<int:group_id>/', methods=["DELETE"])
+# @login_required
+# def delete_group(group_id):
+#     group = Group.query.get(group_id)
+#     if not group:
+#         abort(404, description="Group not found")
+
+#     if group.created_by != current_user.id:
+#         abort(403, description="Not authorized to delete this group")
+
+#     db.session.delete(group)
+#     db.session.commit()
+
+#     return jsonify({'message': 'Group deleted successfully'}), 200
 @group_bp.route('/<int:group_id>/', methods=["DELETE"])
 @login_required
 def delete_group(group_id):
-    group = Group.query.get(group_id)
-    if not group:
-        abort(404, description="Group not found")
+    try:
+        print(f"Received request to delete group with ID: {group_id}")
+        group = Group.query.get(group_id)
+        if group is None:
+            print('Group not found')
+            return jsonify({'error': 'Group not found'}), 404
 
-    if group.created_by != current_user.id:
-        abort(403, description="Not authorized to delete this group")
+        if group.created_by != current_user.id:
+            print('Unauthorized access attempt')
+            return jsonify({'error': 'Unauthorized'}), 403
 
-    db.session.delete(group)
-    db.session.commit()
-
-    return jsonify({'message': 'Group deleted successfully'}), 200
+        db.session.delete(group)
+        db.session.commit()
+        print('Group deleted successfully')
+        return jsonify({'success': 'Group deleted'}), 200
+    except Exception as e:
+        print(f"Error deleting group: {e}")
+        return jsonify({'error': str(e)}), 500

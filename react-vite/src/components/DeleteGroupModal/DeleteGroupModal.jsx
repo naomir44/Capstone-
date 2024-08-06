@@ -9,11 +9,12 @@ const DeleteGroupModal = ({ showModal, setShowModal, groupId }) => {
 
     const handleDelete = async () => {
         const result = await dispatch(deleteGroupThunk(groupId));
+        console.log(`Deleting group with ID: ${groupId}`);
         if (result.success) {
             setShowModal(false);
             navigate('/');
         } else {
-            alert(result.error.message);
+            alert(result.error);
         }
     };
 

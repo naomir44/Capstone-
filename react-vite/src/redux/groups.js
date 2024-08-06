@@ -104,6 +104,7 @@ export const deleteGroupThunk = (groupId) => async (dispatch) => {
   const response = await fetch(`/api/groups/${groupId}/`, {
     method: 'DELETE',
   });
+console.log('Recieved response:', response);
   if (response.ok) {
     dispatch(deleteGroup(groupId))
     return {success: true }
