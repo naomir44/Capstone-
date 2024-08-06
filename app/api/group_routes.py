@@ -91,38 +91,17 @@ def update_group(group_id):
     return jsonify(group.to_dict()), 200
 
 #Delete a group
-# @group_bp.route('/<int:group_id>/', methods=["DELETE"])
-# @login_required
-# def delete_group(group_id):
-#     group = Group.query.get(group_id)
-#     if not group:
-#         abort(404, description="Group not found")
-
-#     if group.created_by != current_user.id:
-#         abort(403, description="Not authorized to delete this group")
-
-#     db.session.delete(group)
-#     db.session.commit()
-
-#     return jsonify({'message': 'Group deleted successfully'}), 200
 @group_bp.route('/<int:group_id>/', methods=["DELETE"])
 @login_required
 def delete_group(group_id):
-    try:
-        print(f"Received request to delete group with ID: {group_id}")
-        group = Group.query.get(group_id)
-        if group is None:
-            print('Group not found')
-            return jsonify({'error': 'Group not found'}), 404
+    group = Group.query.get(group_id)
+    if not group:
+        abort(404, description="Group not found")
 
-        if group.created_by != current_user.id:
-            print('Unauthorized access attempt')
-            return jsonify({'error': 'Unauthorized'}), 403
+    if group.created_by != current_user.id:
+        abort(403, description="Not authorized to delete this group")
 
-        db.session.delete(group)
-        db.session.commit()
-        print('Group deleted successfully')
-        return jsonify({'success': 'Group deleted'}), 200
-    except Exception as e:
-        print(f"Error deleting group: {e}")
-        return jsonify({'error': str(e)}), 500
+    db.session.delete(group)
+    db.session.commit()
+
+    return jsonify({'message': 'Group deleted successfully'}), 200
