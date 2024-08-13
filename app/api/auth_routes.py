@@ -52,9 +52,10 @@ def sign_up():
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         user = User(
-            username=form.data['username'],
+            name=form.data['name'],
             email=form.data['email'],
-            password=form.data['password']
+            password=form.data['password'],
+            profile_picture=form.data['profile_picture'],
         )
         db.session.add(user)
         db.session.commit()
@@ -62,6 +63,22 @@ def sign_up():
         return user.to_dict()
     return form.errors, 401
 
+@auth_routes.route('/update_profile_picture', methods=['POST'])
+@login_required
+def update_profile_picture():
+    """
+    Updates the profile picture URL for the current user.
+    """
+    data = request.get_json()
+    profile_picture_url = data.get('profile_picture')
+
+    if not profile_picture_url:
+        return {'error': 'No profile picture URL provided'}, 400
+
+    current_user.profile_picture = profile_picture_url
+    db.session.commit()
+
+    return current_user.to_dict(), 200
 
 @auth_routes.route('/unauthorized')
 def unauthorized():

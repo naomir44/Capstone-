@@ -7,9 +7,10 @@ import "./SignupForm.css";
 function SignupFormModal() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [profilePicture, setProfilePicture] = useState('');
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
@@ -26,8 +27,9 @@ function SignupFormModal() {
     const serverResponse = await dispatch(
       thunkSignup({
         email,
-        username,
+        name,
         password,
+        profile_picture: profilePicture
       })
     );
 
@@ -54,15 +56,15 @@ function SignupFormModal() {
         </label>
         {errors.email && <p>{errors.email}</p>}
         <label>
-          Username
+          Name
           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             required
           />
         </label>
-        {errors.username && <p>{errors.username}</p>}
+        {errors.name && <p>{errors.name}</p>}
         <label>
           Password
           <input
@@ -83,6 +85,13 @@ function SignupFormModal() {
           />
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+        <label>
+          Profile Picture
+          <input type="text"
+          value={profilePicture}
+          onChange={(e) => setProfilePicture(e.target.value)}
+          />
+        </label>
         <button type="submit">Sign Up</button>
       </form>
     </>

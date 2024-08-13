@@ -51,28 +51,33 @@ const GroupDetails = () => {
     return (
         <div className="group-deets-container">
             <div className="group-deets-header">
-                <h2 className="group-name-in-group-deets">{group.name}</h2>
-                <div className="group-creator">
-                    <h3>Admin:</h3>
-                    {group.creator.name}
+                <div className="group-picture-container">
+                    <img src={group.image_url} alt="Group" className="group-picture" />
                 </div>
-                <div className="group-members">
-                    <h3>Members:</h3>
-                    {group.members?.map(member => (
-                        <div key={member.id} className="member-item">
-                            {member.member.name}
+                <div className="group-info">
+                    <h2 className="group-name-in-group-deets">{group.name}</h2>
+                    <div className="group-members-overview">
+                        <div className="group-member-avatars">
+                            {group.members?.slice(0, 5).map(member => (
+                                <img
+                                    key={member.id}
+                                    src={member.member.profile_picture}
+                                    alt={member.member.name}
+                                    className="member-avatar"
+                                />
+                            ))}
+                            {group.members?.length > 5 && (
+                                <div className="more-members">
+                                    +{group.members.length - 5}
+                                </div>
+                            )}
                         </div>
-                    ))}
-                </div>
-                {currentUser.id === group.created_by && (
-                    <div className="group-deets-maker-actions">
-                        <button onClick={handleUpdateGroupClick}>Update Group</button>
-                        <button onClick={handleDeleteGroupClick}>Delete Group</button>
+                        <div className="group-member-names">
+                            {group.members?.map(member => member.member.name).join(", ")}
+                        </div>
                     </div>
-                )}
+                </div>
             </div>
-            <UpdateGroupFormModal showModal={showUpdateModal} setShowModal={setShowUpdateModal} groupId={groupId} />
-            <DeleteGroupModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} groupId={groupId} />
 
             <div className="expenses-section-group-deets">
                 <h3>Expenses</h3>
@@ -110,6 +115,9 @@ const GroupDetails = () => {
                     <p>No expenses added yet.</p>
                 )}
             </div>
+
+            <UpdateGroupFormModal showModal={showUpdateModal} setShowModal={setShowUpdateModal} groupId={groupId} />
+            <DeleteGroupModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} groupId={groupId} />
         </div>
     );
 };

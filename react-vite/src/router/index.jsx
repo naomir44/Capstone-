@@ -5,6 +5,7 @@ import Layout from './Layout';
 import LandingPage from '../components/LandingPage/LandingPage';
 import GroupDetails from '../components/GroupDetails/GroupDetails';
 import CreateGroupFormModal from '../components/CreateGroupFormModal/CreateGroupFormModal';
+import Balances from '../components/Balances/Balances';
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
         path: "groups/new",
         element: <CreateGroupFormModal />
       },
+      {
+        path: 'balances/:userId/my-balance',
+        element: <Balances />
+      }
     ],
   },
 ]);

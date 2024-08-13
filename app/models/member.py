@@ -17,6 +17,6 @@ class Member(db.Model):
         return {
             'id': self.id,
             'user_id': self.user_id,
-            'member': {'id': self.user.id, 'name': self.user.name},
+            'member': {'id': self.user.id, 'name': self.user.name, 'profile_picture': self.user.profile_picture},
             'group_id': self.group_id,
         }

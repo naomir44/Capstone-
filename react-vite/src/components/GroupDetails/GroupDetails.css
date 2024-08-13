@@ -1,31 +1,83 @@
 .group-deets-container {
-  width: calc(100% - 250px);
-  margin-left: 250px;
+  background-color: #ffffff;
   padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Inter', sans-serif;
+  color: #333333;
+  max-width: 1000px;
+  margin: 20px auto;
+  margin-left: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .group-deets-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
+  gap: 20px;
 }
 
-.group-deets-members {
-  flex-grow: 1;
+.group-picture-container {
+  flex-shrink: 0;
 }
 
-.group-deets-member-item {
-  display: inline-block;
-  margin-right: 10px;
-  font-weight: bold;
+.group-picture {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #e0e0e0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.group-deets-maker-actions {
+.group-info {
+  flex: 1;
+}
+
+.group-name-in-group-deets {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333333;
+}
+
+.group-members-overview {
+  margin-top: 10px;
+}
+
+.group-member-avatars {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 5px;
+}
+
+.member-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.more-members {
+  background-color: #e0e0e0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #555555;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.group-member-names {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666666;
 }
 
 .expenses-section-group-deets {
@@ -33,29 +85,66 @@
 }
 
 .expense-item-in-group-deets {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  padding: 20px;
   border-radius: 8px;
-  background: #f9f9f9;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
 }
 
 .expense-details-in-group-deets {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 16px;
+  color: #555555;
+}
+
+.expense-details-in-group-deets span {
+  margin-right: 10px;
+}
+
+.expense-details-in-group-deets button {
+  color: #555555;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* .expense-details-in-group-deets button:hover {
+  background-color: #c82333;
+} */
+
+.payments-in-group-deets {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.payments-in-group-deets h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333333;
   margin-bottom: 10px;
 }
 
-.payments-in-group-deets {
-  margin-top: 10px;
+.payment-item {
+  background-color: #f1f1f1;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #555555;
 }
 
-.payment-item-in-group-deets {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #ccc;
-  padding-top: 5px;
-  margin-top: 5px;
+.payment-item span {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.payment-item span:last-child {
+  margin-bottom: 0;
 }

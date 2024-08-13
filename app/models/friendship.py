@@ -21,5 +21,5 @@ class Friendship(db.Model):
             'friend_id': self.friend_id,
             'status': self.status,
             'friend_name': self.friend.name,
-            'sender_name': self.user.name
+            'sender_name': self.user.name,
         }

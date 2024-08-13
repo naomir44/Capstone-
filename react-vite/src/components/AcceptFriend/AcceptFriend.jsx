@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { acceptFriendThunk, fetchFriendRequests } from "../../redux/friends";
+import { FaUserPlus } from "react-icons/fa";
 
 const AcceptFriend = () => {
   const dispatch = useDispatch()
@@ -22,11 +23,9 @@ const handleAccept = (friendshipId) => {
     dispatch(fetchFriendRequests(user.id));
   });
 };
-
-console.log(friendRequests)
   return (
     <div>
-    <h2>Friend Requests</h2>
+    <div><FaUserPlus />Friend Requests</div>
     {friendRequests?.length > 0 ? (
         friendRequests?.map(request => (
             <div key={request.id}>

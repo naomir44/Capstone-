@@ -1,37 +1,53 @@
-
 .sidebar {
   height: 100%;
-  width: 250px;
+  width: auto;
   position: fixed;
-  z-index: 1;
   top: 0;
   left: 0;
-  background-color: #111;
-  overflow-x: hidden;
-  transition: 0.5s;
+  background-color: #ffffff;
+  color: #333333;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #e5e5e5;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.sidebar ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.sidebar ul li {
-  padding: 8px 8px 8px 32px;
+.sidebar a {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: #555555;
   text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-  transition: 0.3s;
+  border-radius: 8px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.sidebar ul li:hover {
-  color: #f1f1f1;
+.sidebar a:hover {
+  background-color: #f0f0f0;
+  color: #007aff;
 }
 
-.menu-btn {
-  font-size: 30px;
-  cursor: pointer;
-  background: none;
-  border: none;
+.sidebar a.active {
+  color: #007aff;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.name {
+  font-size: 16px;
+  color: #333;
 }

@@ -1,0 +1,25 @@
+.groups-header {
+  font-size: 16px;
+  font-weight: normal;
+  color: #555555;
+  display: flex;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
+  margin-bottom: 10px;
+}
+
+.open-create-group-modal-button-div {
+margin-left: auto;
+}
+
+.open-create-group-modal-button {
+  padding: 5px 5px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 8px;
+  border: none;
+  color: #555555;
+  font-family: 'Arial', sans-serif;
+  font-size: 12px;
+}
