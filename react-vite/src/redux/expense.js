@@ -1,3 +1,4 @@
+import { fetchBalance } from "./balance";
 import { fetchGroupDeets } from "./groups";
 
 const GET_EXPENSES = 'expenses/getExpenses';
@@ -75,19 +76,23 @@ export const updateExpenseThunk = (updatedData, expenseId) => async (dispatch) =
   if (response.ok) {
       const updatedExpense = await response.json();
       dispatch(updateExpense(updatedExpense));
+      dispatch(fetchGroupDeets(updateExpense.group_id));
+      dispatch(fetchBalance());
       return updatedExpense
   } else {
       console.error('Failed to update expense');
   }
 };
 
-export const deleteExpenseThunk = (expenseId) => async (dispatch) => {
+export const deleteExpenseThunk = (expenseId, groupId) => async (dispatch) => {
   const response = await fetch(`/api/expenses/delete/${expenseId}/`, {
       method: 'DELETE'
   });
 
   if (response.ok) {
       dispatch(deleteExpense(expenseId));
+      dispatch(fetchGroupDeets(groupId));
+      dispatch(fetchBalance());
       return
   } else {
       console.error('Failed to delete expense');

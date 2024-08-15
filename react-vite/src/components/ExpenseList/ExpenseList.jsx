@@ -8,8 +8,6 @@ const ExpenseList = ({ groupId }) => {
   const dispatch = useDispatch();
   const expenses = useSelector(state => state.expenses.list);
 
-  console.log(expenses)
-
   useEffect(() => {
       dispatch(fetchExpenses(groupId));
   }, [dispatch, groupId]);

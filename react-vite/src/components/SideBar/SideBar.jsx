@@ -9,26 +9,26 @@ import { IoHomeSharp } from "react-icons/io5";
 import { BsCreditCardFill } from "react-icons/bs";
 import './SideBar.css';
 
-const SideBar = () => {
+const SideBar = ({ sidebarOpen }) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.session.user);
   const [newProfilePicture, setNewProfilePicture] = useState('');
-  console.log(user)
 
   const handlePictureUpdate = async () => {
     if (newProfilePicture) {
       await dispatch(updateProfilePictureThunk(newProfilePicture));
-      setNewProfilePicture(''); // Reset the input field
+      setNewProfilePicture('');
     }
   };
 
   return (
     <>
-      <div className='sidebar'>
+    {user &&
+      <div className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
       <div className='profile'>
           <div className='profile-info'>
             <img
-              src={user.profile_picture}
+              src={user?.profile_picture}
               alt="Profile"
               className='profile-picture'
               onClick={() => {
@@ -37,7 +37,7 @@ const SideBar = () => {
               }}
             />
             <div className='name'>
-              {user.name}
+              {user?.name}
             </div>
           </div>
           {newProfilePicture && (
@@ -48,7 +48,7 @@ const SideBar = () => {
           <NavLink to="/"><IoHomeSharp className='home-icon'/>Home</NavLink>
         </div>
         <div className='balances-button'>
-          <NavLink to={`/balances/${user.id}/my-balance`}><BsCreditCardFill />Balances</NavLink>
+          <NavLink to={`/balances/${user?.id}/my-balance`}><BsCreditCardFill />Balances</NavLink>
         </div>
         <div className='groups'>
           <Groups />
@@ -60,6 +60,7 @@ const SideBar = () => {
           <AcceptFriend />
         </div>
       </div>
+      }
     </>
   );
 };

@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateGroupThunk } from '../../redux/groups';
 import './UpdateGroupFormModal.css';
+import { useModal } from '../../context/Modal';
 
-const UpdateGroupFormModal = ({ showModal, setShowModal, groupId }) => {
+const UpdateGroupFormModal = ({ groupId }) => {
     const dispatch = useDispatch();
     const group = useSelector(state => state.groups[groupId]);
     const friends = useSelector(state => state.session.user.friendships);
@@ -13,6 +14,7 @@ const UpdateGroupFormModal = ({ showModal, setShowModal, groupId }) => {
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
+    const { closeModal } = useModal()
 
     useEffect(() => {
         if (group) {
@@ -33,7 +35,6 @@ const UpdateGroupFormModal = ({ showModal, setShowModal, groupId }) => {
         };
 
         dispatch(updateGroupThunk(groupId, updatedGroup));
-        setShowModal(false);
     };
 
     const handleFriendSelection = (friendId) => {
@@ -53,12 +54,10 @@ const UpdateGroupFormModal = ({ showModal, setShowModal, groupId }) => {
     };
 
 
-    if (!showModal) return null;
-
     return (
         <div className="update-group-modal-background">
             <div className="update-group-modal-content">
-                <button className="update-group-close-btn" onClick={() => setShowModal(false)}>&times;</button>
+                <button className="update-group-close-btn" onClick={() => closeModal()}>&times;</button>
                 <form onSubmit={handleSubmit}>
                     <label>
                         Group Name:

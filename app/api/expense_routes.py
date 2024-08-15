@@ -6,15 +6,20 @@ from datetime import datetime
 expense_bp = Blueprint('expenses', __name__)
 
 def calculate_user_expenses(user_id):
-    # Calculate the total amount the user has paid
     total_paid = db.session.query(
-        db.func.coalesce(db.func.sum(Payment.amount), 0).label('total_paid')
-    ).filter(Payment.payer_id == user_id).scalar()
+    db.func.coalesce(db.func.sum(Payment.amount), 0).label('total_paid')
+    ).filter(
+        Payment.payer_id == user_id,
+        Payment.status == 'paid'
+    ).scalar()
 
     # Calculate the total amount the user is owed by others
     total_owed = db.session.query(
         db.func.coalesce(db.func.sum(Payment.amount), 0).label('total_owed')
-    ).filter(Payment.payee_id == user_id).scalar()
+    ).filter(
+        Payment.payee_id == user_id,
+        Payment.status == 'pending'
+        ).scalar()
 
     return {
         'total_paid': total_paid,
@@ -26,8 +31,32 @@ def calculate_user_expenses(user_id):
 @expense_bp.route('/my-balance/', methods=['GET'])
 @login_required
 def get_my_balance():
-    balance_summary = calculate_user_expenses(current_user.id)
-    return jsonify(balance_summary)
+    user_id = current_user.id
+
+    # Summary of balance
+    balance_summary = calculate_user_expenses(user_id)
+
+    # Expenses where the user owes money (i.e., payee_id is the current user)
+    expenses_you_owe = db.session.query(Expense).join(Payment).filter(
+        Payment.payee_id != user_id,
+        Payment.payer_id == user_id,
+        Payment.status == 'pending'
+    ).all()
+
+    # Expenses where the user is owed money (i.e., payer_id is the current user)
+    expenses_owed_to_you = db.session.query(Expense).join(Payment).filter(
+        Payment.payer_id != user_id,
+        Payment.payee_id == user_id,
+        Payment.status == 'pending'
+    ).all()
+
+    return jsonify({
+        'total_paid': balance_summary['total_paid'],
+        'total_owed': balance_summary['total_owed'],
+        'net_balance': balance_summary['net_balance'],
+        'expenses_you_owe': [expense.to_dict() for expense in expenses_you_owe],
+        'expenses_owed_to_you': [expense.to_dict() for expense in expenses_owed_to_you]
+    })
 
 #Get all expenses for a group
 @expense_bp.route('/group/<int:group_id>/')
@@ -153,3 +182,15 @@ def delete_expense(expense_id):
     db.session.delete(expense)
     db.session.commit()
     return jsonify({"message": "Expense deleted"}), 200
+
+# Pay expense
+@expense_bp.route('/pay/<int:expense_id>/', methods=["PUT"])
+@login_required
+def pay_expense(expense_id):
+    expense = Expense.query.get_or_404(expense_id)
+    payment = next((payment for payment in expense.payments if payment.payer_id == current_user.id), None)
+    data = request.get_json()
+
+    payment.status = data.get('status', payment.status)
+    db.session.commit()
+    return jsonify(payment.to_dict())

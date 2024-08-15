@@ -19,7 +19,7 @@ function Navigation() {
   };
 
   return (
-    <div>
+    <div className="navigation">
       {user && <SideBar />}
       <ul>
         <li>

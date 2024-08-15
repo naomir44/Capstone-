@@ -24,5 +24,7 @@ class Payment(db.Model):
             'payer_id': self.payer_id,
             'payee_id': self.payee_id,
             'amount': self.amount,
-            'status': self.status
+            'status': self.status,
+            'payer': self.payer.name,
+            'payee': self.payee.name
         }

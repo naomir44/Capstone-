@@ -27,5 +27,6 @@ class Expense(db.Model):
             'date': self.date.isoformat(),
             'payer_id': self.payer_id,
             'split_method': self.split_method,
-            'payments': [payment.to_dict() for payment in self.payments]
+            'payments': [payment.to_dict() for payment in self.payments],
+            'payer': self.payer.name
         }

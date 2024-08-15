@@ -5,9 +5,7 @@
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   font-family: 'Inter', sans-serif;
   color: #333333;
-  max-width: 1000px;
-  margin: 20px auto;
-  margin-left: 280px;
+  margin-left: 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -19,6 +17,7 @@
   gap: 20px;
 }
 
+/* Group picture styling */
 .group-picture-container {
   flex-shrink: 0;
 }
@@ -32,8 +31,16 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Group information styling */
 .group-info {
   flex: 1;
+}
+
+/* Container for group name and edit dropdown */
+.group-name-edit-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .group-name-in-group-deets {
@@ -42,10 +49,61 @@
   color: #333333;
 }
 
+.group-actions-dropdown {
+  position: relative;
+  display: inline-block;
+}
+.group-actions-dropdown.show .dropdown-content {
+  display: block;
+}
+
+.dropdown-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-btn:hover {
+  background-color: #0056b3;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dropdown-content button {
+  width: 100%;
+  background-color: transparent;
+  color: #333;
+  padding: 12px 16px;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-content button:hover {
+  background-color: #f1f1f1;
+}
+
 .group-members-overview {
   margin-top: 10px;
 }
 
+/* Group members avatars */
 .group-member-avatars {
   display: flex;
   align-items: center;
@@ -74,16 +132,19 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Group members names */
 .group-member-names {
   margin-top: 10px;
   font-size: 14px;
   color: #666666;
 }
 
+/* Expenses section styling */
 .expenses-section-group-deets {
   margin-top: 20px;
 }
 
+/* Individual expense item */
 .expense-item-in-group-deets {
   background-color: #f9f9f9;
   padding: 20px;
@@ -92,6 +153,7 @@
   margin-bottom: 20px;
 }
 
+/* Expense details section */
 .expense-details-in-group-deets {
   display: flex;
   justify-content: space-between;
@@ -103,21 +165,6 @@
 .expense-details-in-group-deets span {
   margin-right: 10px;
 }
-
-.expense-details-in-group-deets button {
-  color: #555555;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-/* .expense-details-in-group-deets button:hover {
-  background-color: #c82333;
-} */
-
 .payments-in-group-deets {
   margin-top: 20px;
   padding-top: 20px;
@@ -131,6 +178,7 @@
   margin-bottom: 10px;
 }
 
+/* Individual payment item */
 .payment-item {
   background-color: #f1f1f1;
   padding: 12px;
