@@ -9,6 +9,7 @@ class Member(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete='CASCADE'), nullable=False)
     group_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('groups.id'), ondelete='CASCADE'), nullable=False)
+    role=db.Column(db.String, nullable=True)
 
     user = db.relationship('User', back_populates='members')
     group = db.relationship('Group', back_populates='members')

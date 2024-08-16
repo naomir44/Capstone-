@@ -65,6 +65,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('group_id', sa.Integer(), nullable=False),
+    sa.Column('role', sa.String(length=50), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id']),
     sa.ForeignKeyConstraint(['group_id'], ['groups.id']),
     sa.PrimaryKeyConstraint('id')
