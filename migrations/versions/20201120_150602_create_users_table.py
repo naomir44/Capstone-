@@ -102,6 +102,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['payee_id'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
+    print("Payments table created.")
 
     if environment == "production":
         op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
