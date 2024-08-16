@@ -1,1 +1,45 @@
-/* TODO: Add sitewide styles */
+/* General sitewide styles */
+.app-layout {
+  display: flex;
+  height: 100vh;
+}
+
+.main-content {
+  padding: 20px;
+  flex-grow: 1;
+  transition: margin-left 0.3s ease;
+  margin-left: 240px;
+}
+
+.main-content.sidebar-closed {
+  margin-left: 0;
+}
+
+.sidebar-toggle {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1100;
+  background-color: transparent;
+  color: #333;
+  border: none;
+  font-size: 14px;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-self: flex-end;
+}
+
+.sidebar-toggle.closed {
+  left: 10px;
+}
+
+.sidebar-toggle.open {
+  left: 250px;
+}
+
+.sidebar-toggle:hover {
+  background-color: #f0f0f0;
+  color: #007aff;
+}

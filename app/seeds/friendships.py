@@ -7,12 +7,14 @@ def seed_friendships():
   friendship3 = Friendship(user_id=2, friend_id=3, status='accepted')
   friendship4 = Friendship(user_id=4, friend_id=5, status='pending')
   friendship5 = Friendship(user_id=5, friend_id=2, status='pending')
+  friendship6 = Friendship(user_id=3, friend_id=4, status='accepted')
 
   db.session.add(friendship1)
   db.session.add(friendship2)
   db.session.add(friendship3)
   db.session.add(friendship4)
   db.session.add(friendship5)
+  db.session.add(friendship6)
   db.session.commit()
 
 

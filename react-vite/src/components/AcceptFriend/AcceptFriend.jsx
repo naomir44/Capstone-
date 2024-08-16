@@ -1,6 +1,7 @@
-import React, { useEffect, useState} from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { acceptFriendThunk, fetchFriendRequests } from "../../redux/friends";
+import { FaUserPlus } from "react-icons/fa";
 
 const AcceptFriend = () => {
   const dispatch = useDispatch()
@@ -13,30 +14,25 @@ const AcceptFriend = () => {
 
   useEffect(() => {
     if (user) {
-      console.log("Fetching friend requests for user:", user.id);
         dispatch(fetchFriendRequests(user.id));
     }
 }, [dispatch, user]);
 
-useEffect(() => {
-  console.log("Friend requests updated:", friendRequests);
-}, [friendRequests]);
-
-  const handleAccept = (friendshipId) => {
-    console.log("Accepting friend request:", friendshipId);
-    dispatch(acceptFriendThunk(friendshipId))
-  }
-
+const handleAccept = (friendshipId) => {
+  dispatch(acceptFriendThunk(friendshipId)).then(() => {
+    dispatch(fetchFriendRequests(user.id));
+  });
+};
   return (
     <div>
-    <h2>Friend Requests</h2>
-    {friendRequests.length > 0 ? (
-        friendRequests.map(request => (
+    <div><FaUserPlus />Friend Requests</div>
+    {friendRequests?.length > 0 ? (
+        friendRequests?.map(request => (
             <div key={request.id}>
               {request.user_id !== user.id &&
               <>
                 <span>{request.sender_name}</span>
-                <button onClick={() => handleAccept(request.id)}>Accept</button>
+                <button onClick={() => handleAccept(request.friendship_id)}>Accept</button>
               </>
               }
             </div>

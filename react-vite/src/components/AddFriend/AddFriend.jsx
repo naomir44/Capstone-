@@ -1,12 +1,15 @@
-import React, { useState} from "react";
+import { useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addFriendThunk, fetchFriendRequests } from "../../redux/friends";
+import { addFriendThunk, fetchFriendRequests, fetchFriends } from "../../redux/friends";
+import './AddFriend.css';
+import { useModal } from "../../context/Modal";
 
 const AddFriend = () => {
   const dispatch = useDispatch()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const user = useSelector(state => state.session.user)
+  const { closeModal } = useModal();
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -16,23 +19,32 @@ const AddFriend = () => {
     } else {
       setEmail('')
       setError('')
-      dispatch(fetchFriendRequests(user.id))
+      closeModal()
+      await dispatch(fetchFriendRequests(user.id))
+      await dispatch(fetchFriends(user.id))
     }
   };
-
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Friend's Email:
-        <input type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        />
-      </label>
-      <button type="submit">Add Friend</button>
-      {error && <p className="add-friend-error">{error}</p>}
-    </form>
-  )
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <button className="modal-close-btn" onClick={closeModal}>&times;</button>
+        <form onSubmit={handleSubmit} className="add-friend-section">
+          <label className="add-friend-label">
+            Friend&apos;s Email:
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="add-friend-input"
+              placeholder="Enter email address"
+            />
+          </label>
+          <button type="submit" className="add-friend-button">Add Friend</button>
+          {error && <p className="add-friend-error">{error}</p>}
+        </form>
+      </div>
+    </div>
+  );
 }
 
 export default AddFriend;

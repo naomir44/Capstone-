@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createGroupThunk } from '../../redux/groups'
 import './CreateGroupFormModal.css';
+import { useNavigate } from 'react-router-dom';
+import { useModal } from '../../context/Modal';
 
-const CreateGroupFormModal = ({ showModal, setShowModal }) => {
+const CreateGroupFormModal = () => {
     const dispatch = useDispatch();
-    const friends = useSelector(state => state.session.user.friends)
+    const navigate = useNavigate();
+    const friends = useSelector(state => state.session.user.friendships)
+    const currentUser = useSelector(state => state.session.user);
+    const acceptedFriends = friends.filter(friend => friend.status === "accepted");
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
+    const { closeModal } = useModal();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,14 +25,18 @@ const CreateGroupFormModal = ({ showModal, setShowModal }) => {
             members: selectedFriends,
             image_url: imageUrl
         };
-        console.log(newGroup)
 
-        dispatch(createGroupThunk(newGroup));
-        setName('');
-        setDescription('');
-        setSelectedFriends([]);
-        setImageUrl('');
-        setShowModal(false);
+        const response = await dispatch(createGroupThunk(newGroup));
+        if (response) {
+            setName('');
+            setDescription('')
+            setSelectedFriends([])
+            setImageUrl('')
+            closeModal()
+            navigate(`/groups/${response.id}`)
+        } else {
+            console.log('Failed to create group')
+        }
     };
 
     const handleFriendSelection = (friendId) => {
@@ -37,55 +47,71 @@ const CreateGroupFormModal = ({ showModal, setShowModal }) => {
         );
     };
 
-    if (!showModal) return null;
+    const getFriendName = (friend) => {
+        if (friend.user_id === currentUser.id) {
+            return friend.friend_name;
+        } else {
+            return friend.sender_name;
+        }
+    };
 
     return (
-        <div className="create-group-modal-background">
-            <div className="create-group-modal-content">
-                <button className="create-group-close-btn" onClick={() => setShowModal(false)}>&times;</button>
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        Group Name:
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                    </label>
-                    <label>
-                        Description:
-                        <textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        />
-                    </label>
-                    <label>
-                        Group Image URL:
-                        <input
-                            type="text"
-                            value={imageUrl}
-                            onChange={(e) => setImageUrl(e.target.value)}
-                        />
-                    </label>
-                    <div>
-                        <h3>Select Friends to Add:</h3>
-                        {friends.map(friend => (
-                            <div key={friend.id}>
-                                <input
-                                    type="checkbox"
-                                    checked={selectedFriends.includes(friend.id)}
-                                    onChange={() => handleFriendSelection(friend.id)}
-                                />
-                                {friend.friend_name}
-                            </div>
-                        ))}
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="modal-close-btn" onClick={closeModal}>&times;</button>
+            <form onSubmit={handleSubmit} className="create-group-form">
+              <label className="form-label">
+                Group Name:
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  className="form-input"
+                  placeholder="Enter group name"
+                />
+              </label>
+              <label className="form-label">
+                Description:
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="form-textarea"
+                  placeholder="Enter group description"
+                />
+              </label>
+              <label className="form-label">
+                Group Image URL:
+                <input
+                  type="text"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  className="form-input"
+                  placeholder="Enter image URL"
+                />
+              </label>
+              <div className="friend-selection">
+                <h3 className="selection-heading">Select Friends to Add:</h3>
+                {acceptedFriends.map(friend => {
+                  const friendId = friend.user_id === currentUser.id ? friend.friend_id : friend.user_id;
+                  return (
+                    <div key={friend.id} className="select-friend">
+                      <input
+                        type="checkbox"
+                        checked={selectedFriends.includes(friendId)}
+                        onChange={() => handleFriendSelection(friendId)}
+                        className="checkbox"
+                      />
+                      <label className="friend-name">{getFriendName(friend)}</label>
                     </div>
-                    <button type="submit">Create Group</button>
-                </form>
-            </div>
+                  );
+                })}
+              </div>
+              <button type="submit" className="submit-button">Create Group</button>
+            </form>
+          </div>
         </div>
-    );
+      );
 };
 
 export default CreateGroupFormModal;

@@ -58,6 +58,26 @@ export const thunkSignup = (user) => async (dispatch) => {
   }
 };
 
+export const updateProfilePictureThunk = (newProfilePicture) => async (dispatch) => {
+  const response = await fetch('/api/auth/update_profile_picture', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ profile_picture: newProfilePicture }),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(setUser(data)); // Update the user in the Redux store
+  } else if (response.status < 500) {
+    const errorMessages = await response.json();
+    return errorMessages;
+  } else {
+    return { server: "Something went wrong. Please try again" };
+  }
+};
+
 export const thunkLogout = () => async (dispatch) => {
   await fetch("/api/auth/logout");
   dispatch(removeUser());

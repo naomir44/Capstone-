@@ -4,15 +4,15 @@ from sqlalchemy.sql import text
 # Adds a demo user, you can add other users here if you want
 def seed_users():
     Demo = User(
-        name='Demo', email='demo@aa.io', password='password')
+        name='Demo', email='demo@aa.io', password='password', profile_picture='https://pyschguacbucket.s3.us-west-1.amazonaws.com/profile-pic-3.jpeg')
     Marnie = User(
-        name='marnie', email='marnie@aa.io', password='password')
+        name='marnie', email='marnie@aa.io', password='password',profile_picture='https://pyschguacbucket.s3.us-west-1.amazonaws.com/profile-pic-2.jpeg' )
     Bobbie = User(
-        name='bobbie', email='bobbie@aa.io', password='password')
+        name='bobbie', email='bobbie@aa.io', password='password',profile_picture='https://pyschguacbucket.s3.us-west-1.amazonaws.com/profile-pic-4.png')
     Keri = User(
-        name='Keri', email='keri@aa.io', password='password')
+        name='Keri', email='keri@aa.io', password='password',profile_picture='https://pyschguacbucket.s3.us-west-1.amazonaws.com/profile-pic.jpeg')
     Jake = User(
-        name='Jake', email='jake@aa.io', password='password')
+        name='Jake', email='jake@aa.io', password='password',profile_picture='https://pyschguacbucket.s3.us-west-1.amazonaws.com/profile-pic-5.jpeg')
 
 
     db.session.add(Demo)

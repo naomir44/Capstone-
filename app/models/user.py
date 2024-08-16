@@ -20,9 +20,7 @@ class User(db.Model, UserMixin):
     expenses = db.relationship('Expense', back_populates='payer', cascade='all, delete-orphan')
     members = db.relationship('Member', back_populates='user', cascade='all, delete-orphan')
     images = db.relationship('Image', back_populates='user')
-    # friends = db.relationship('Friendship', foreign_keys=['Friendship.user_id', 'Friendship.friend_id'], back_populates='user')
-
-    friends = db.relationship(
+    friendships = db.relationship(
         'Friendship',
         primaryjoin="or_(User.id == Friendship.user_id, User.id == Friendship.friend_id)",
         back_populates="user",
@@ -49,5 +47,6 @@ class User(db.Model, UserMixin):
             'profile_picture': self.profile_picture,
             'groups': [group.to_dict() for group in self.groups],
             'images': [image.to_dict() for image in self.images],
-            'friends': [friendship.to_dict() for friendship in self.friends]
+            'friendships': [friendship.to_dict() for friendship in self.friendships],
+            'expenses': [expense.to_dict() for expense in self.expenses]
         }

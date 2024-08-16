@@ -16,6 +16,7 @@ class Expense(db.Model):
 
     payer = db.relationship('User', back_populates='expenses')
     group = db.relationship('Group', back_populates='expenses')
+    payments = db.relationship('Payment', back_populates='expense', cascade='all, delete-orphan')
 
     def to_dict(self):
         return {
@@ -25,5 +26,7 @@ class Expense(db.Model):
             'amount': self.amount,
             'date': self.date.isoformat(),
             'payer_id': self.payer_id,
-            'split_method': self.split_method
+            'split_method': self.split_method,
+            'payments': [payment.to_dict() for payment in self.payments],
+            'payer': self.payer.name
         }

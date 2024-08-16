@@ -1,27 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateGroupThunk } from '../../redux/groups';
 import './UpdateGroupFormModal.css';
+import { useModal } from '../../context/Modal';
 
-const UpdateGroupFormModal = ({ showModal, setShowModal, groupId }) => {
+const UpdateGroupFormModal = ({ groupId }) => {
     const dispatch = useDispatch();
     const group = useSelector(state => state.groups[groupId]);
-    const friends = useSelector(state => state.session.user.friends);
+    const friends = useSelector(state => state.session.user.friendships);
+    const currentUser = useSelector(state => state.session.user)
+    const acceptedFriends = friends.filter(friend => friend.status === "accepted")
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
-
+    const { closeModal } = useModal()
 
     useEffect(() => {
         if (group) {
             setName(group.name || '');
             setDescription(group.description || '');
-            setSelectedFriends(group.members ? group.members.map(member => member.id) : []);
+            setSelectedFriends(group.members ? group.members.map(member => member.user_id) : []);
             setImageUrl(group.image_url || '');
         }
     }, [group]);
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -33,7 +35,7 @@ const UpdateGroupFormModal = ({ showModal, setShowModal, groupId }) => {
         };
 
         dispatch(updateGroupThunk(groupId, updatedGroup));
-        setShowModal(false);
+        closeModal()
     };
 
     const handleFriendSelection = (friendId) => {
@@ -44,12 +46,19 @@ const UpdateGroupFormModal = ({ showModal, setShowModal, groupId }) => {
         );
     };
 
-    if (!showModal) return null;
+    const getFriendName = (friend) => {
+        if (friend.user_id === currentUser.id) {
+            return friend.friend_name;
+        } else {
+            return friend.sender_name;
+        }
+    };
+
 
     return (
         <div className="update-group-modal-background">
             <div className="update-group-modal-content">
-                <button className="update-group-close-btn" onClick={() => setShowModal(false)}>&times;</button>
+                <button className="update-group-close-btn" onClick={() => closeModal()}>&times;</button>
                 <form onSubmit={handleSubmit}>
                     <label>
                         Group Name:
@@ -77,16 +86,19 @@ const UpdateGroupFormModal = ({ showModal, setShowModal, groupId }) => {
                     </label>
                     <div>
                         <h3>Select Friends to Add:</h3>
-                        {friends.map(friend => (
-                            <div key={friend.id}>
-                                <input
-                                    type="checkbox"
-                                    checked={selectedFriends.includes(friend.id)}
-                                    onChange={() => handleFriendSelection(friend.id)}
-                                />
-                                {friend.friend_name}
-                            </div>
-                        ))}
+                        {acceptedFriends.map(friend => {
+                            const friendId = friend.user_id === currentUser.id ? friend.friend_id : friend.user_id;
+                            return (
+                                <div key={friend.id}>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedFriends.includes(friendId)}
+                                        onChange={() => handleFriendSelection(friendId)}
+                                    />
+                                    {getFriendName(friend)}
+                                </div>
+                            );
+                        })}
                     </div>
                     <button type="submit">Update Group</button>
                 </form>

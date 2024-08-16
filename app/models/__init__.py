@@ -7,3 +7,4 @@ from .group import Group
 from .member import Member
 from .image import Image
 from .friendship import Friendship
+from .payment import Payment

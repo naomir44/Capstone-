@@ -4,10 +4,10 @@ from app.models import  User, Friendship, db
 
 friendship_bp = Blueprint('friendships', __name__)
 
-# Get all friends
+# Get all user's friends
 @friendship_bp.route('/all/')
 @login_required
-def get_friends():
+def get_user_friends():
     friendships = Friendship.query.filter(
         (Friendship.user_id == current_user.id) |
         (Friendship.friend_id == current_user.id)
@@ -19,8 +19,8 @@ def get_friends():
     friends = []
     for friendship in friendships: #for each 'friendship' record, we find the friend by check which id is not the current user
         friend_id = friendship.friend_id if friendship.user_id == current_user.id else friendship.user_id
-        friend = User.query.get(friend_id) #once we find the friend, we get the friend(users) info
-        friends.append(friend.to_dict())
+        friend_info = User.query.get(friend_id) #once we find the friend, we get the friend(users) info
+        friends.append(friend_info.to_dict())
     return jsonify(friends), 200
 
 #Add a friend

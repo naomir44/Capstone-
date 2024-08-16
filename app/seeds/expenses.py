@@ -3,9 +3,9 @@ from sqlalchemy.sql import text
 from datetime import date
 
 def seed_expenses():
-    expense1 = Expense(group_id=1, description='Hotel Booking', amount=500.0, date=date.today(), payer_id=1, split_method='Equal')  # Paid by Demo
-    expense2 = Expense(group_id=1, description='Flight Tickets', amount=1200.0, date=date.today(), payer_id=2, split_method='Equal')  # Paid by Marnie
-    expense3 = Expense(group_id=2, description='Office Supplies', amount=200.0, date=date.today(), payer_id=3, split_method='Equal')  # Paid by Bobbie
+    expense1 = Expense(group_id=1, description='Hotel Booking', amount=500.0, date=date.today(), payer_id=1, split_method='equal')  # Paid by Demo
+    expense2 = Expense(group_id=1, description='Flight Tickets', amount=1200.0, date=date.today(), payer_id=2, split_method='equal')  # Paid by Marnie
+    expense3 = Expense(group_id=2, description='Office Supplies', amount=200.0, date=date.today(), payer_id=3, split_method='equal')  # Paid by Bobbie
 
     db.session.add(expense1)
     db.session.add(expense2)

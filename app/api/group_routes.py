@@ -1,14 +1,20 @@
 from flask import Blueprint, jsonify, request, abort
 from flask_login import login_required, current_user
 from app.models import Group, User, Member, db
+from sqlalchemy import or_
 
 group_bp = Blueprint('groups', __name__)
 
-#Get all groups
+#Get user groups
 @group_bp.route('/')
 def get_groups():
-  groups = Group.query.all()
-  return jsonify([group.to_dict() for group in groups])
+    groups = Group.query.join(Member).filter(
+        or_(
+            Member.user_id == current_user.id,
+            Group.created_by == current_user.id
+        )
+    ).all()
+    return jsonify([group.to_dict() for group in groups])
 
 #Get group details
 @group_bp.route('/<int:id>/')
@@ -37,12 +43,11 @@ def create_group():
         image_url=image_url
         )
     db.session.add(new_group)
-    db.session.commit()
 
     for member_id in member_ids:
         user = User.query.get(member_id)
         if user:
-            member = Member(user_id=user.id, group_id=new_group.id, role='member')
+            member = Member(user_id=user.id, group_id=new_group.id)
             db.session.add(member)
 
     db.session.commit()
@@ -54,23 +59,33 @@ def create_group():
 @login_required
 def update_group(group_id):
     group = Group.query.get_or_404(group_id)
+
+    if group.created_by != current_user.id:
+        abort(403, description="You are not authorized to update this group")
+
     data = request.get_json()
-
-    if group.creator.id != current_user.id:
-        abort(403, description="You are not allowed to update this group")
-
     group.name = data.get('name', group.name)
     group.description = data.get('description', group.description)
     group.image_url = data.get('image_url', group.image_url)
 
     member_ids = data.get('members', [])
 
-    group.members = []
-    for member_id in member_ids:
+   #update group members
+    existing_member_ids = {member.user_id for member in group.members}
+    new_member_ids = set(member_ids) - existing_member_ids
+    removed_member_ids = existing_member_ids - set(member_ids)
+
+    #add new members
+    for member_id in new_member_ids:
         user = User.query.get(member_id)
         if user:
-            member = Member(user_id=user.id, group_id=group.id, role='member')
+            member = Member(user_id=user.id, group_id=group.id)
             db.session.add(member)
+    #remove old members
+    for member_id in removed_member_ids:
+        member = Member.query.filter_by(user_id=member_id, group_id=group.id).first()
+        if member:
+            db.session.delete(member)
 
     db.session.commit()
     return jsonify(group.to_dict()), 200

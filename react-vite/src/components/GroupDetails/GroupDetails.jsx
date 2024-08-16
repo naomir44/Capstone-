@@ -2,67 +2,110 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchGroupDeets } from "../../redux/groups";
+import AddExpenseFormModal from "../AddExpenseFormModal/AddExpenseFormModal";
 import UpdateGroupFormModal from "../UpdateGroupFormModal/UpdateGroupFormModal";
 import DeleteGroupModal from "../DeleteGroupModal/DeleteGroupModal";
-import './GroupDetails.css'
+import OpenModalButton from '../OpenModalButton'
+import './GroupDetails.css';
 
 const GroupDetails = () => {
-  let { groupId } = useParams()
-  groupId = +groupId
-  const group = useSelector(state => state.groups[groupId])
-  const currentUser = useSelector(state => state.session.user)
-  const dispatch = useDispatch()
-  const [showUpdateModal, setShowUpdateModal] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
+    let { groupId } = useParams();
+    const dispatch = useDispatch();
+    const group = useSelector(state => state.groups[groupId]);
+    const [showEditOptions, setShowEditOptions] = useState(false);
 
-  console.log(currentUser)
+    useEffect(() => {
+        dispatch(fetchGroupDeets(groupId));
+    }, [dispatch, groupId]);
 
-  useEffect(() => {
-    dispatch(fetchGroupDeets(groupId))
-  },[dispatch, groupId])
+    if (!group) {
+        return <h1>Loading...</h1>;
+    }
 
-  if (!group) {
-    return <h1>Loading...</h1>
-  }
+    const toggleEditOptions = () => {
+        setShowEditOptions(!showEditOptions);
+    };
 
-  const handleUpdateGroupClick = () => {
-    setShowUpdateModal(true)
-  };
+    return (
+        <div className="group-deets-container">
+            <div className="group-deets-header">
+                <div className="group-picture-container">
+                    <img src={group.image_url} alt="Group" className="group-picture" />
+                </div>
+                <div className="group-info">
+                    <div className="group-name-edit-container">
+                        <h2 className="group-name-in-group-deets">{group.name}</h2>
+                        <div><OpenModalButton
+                            modalComponent={<AddExpenseFormModal groupId={group.id} />}
+                            buttonText={'Add an expense'}
+                            /></div>
+                        <div className={`group-actions-dropdown ${showEditOptions ? 'show' : ''}`}>
+                            <button onClick={toggleEditOptions} className="dropdown-btn">
+                                Edit
+                            </button>
+                            {showEditOptions && (
+                                <div className="dropdown-content">
+                                    {console.log("Dropdown is rendered")}
+                                    <OpenModalButton
+                                    buttonText="Update"
+                                    modalComponent={<UpdateGroupFormModal groupId={groupId}/>}
+                                    />
+                                   <OpenModalButton
+                                   buttonText='Delete'
+                                   modalComponent={<DeleteGroupModal groupId={groupId}/>}
+                                   />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="group-members-overview">
+                        <div className="group-member-avatars">
+                            {group.members?.slice(0, 5).map(member => (
+                                <img
+                                    key={member.id}
+                                    src={member.member.profile_picture}
+                                    alt={member.member.name}
+                                    className="member-avatar"
+                                />
+                            ))}
+                            {group.members?.length > 5 && (
+                                <div className="more-members">
+                                    +{group.members.length - 5}
+                                </div>
+                            )}
+                        </div>
+                        <div className="group-member-names">
+                            {group.members?.map(member => member.member.name).join(", ")}
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-const handleDeleteGroupClick = () => {
-  setShowDeleteModal(true)
-}
+            <div className="payments-feed">
+                <h3>Payments Feed</h3>
+                {group.expenses.length > 0 ? (
+                    group.expenses.map(expense => (
+                        <div key={expense.id} className="payment-item">
+                            <div>{expense.description} Paid By: {expense.payer}</div>
+                            <div>Total: {expense.amount}</div>
+                            {expense.payments.map(payment => (
+                                payment.status === 'paid' && (
+                               <div key={payment.id}>
+                                {payment.payee} paid {payment.payer} ${payment.amount.toFixed(2)}
+                               </div>
+                                )
+                            ))}
+                        </div>
+                    ))
+                ) : (
+                    <p>No payments made yet.</p>
+                )}
+            </div>
 
-if (!group) {
-  return <h1>Loading...</h1>
-}
-  return (
-    <div className="group-deets-container">
-      <div>{group.creator.name}</div>
-      <div>
-        {group.expenses.map(expense => (
-          <div key={expense.id}>
-            {expense.amount}
-          </div>
-        ))}
-      </div>
-      <div>
-        {group.members.map(member => (
-          <div key={member.id}>
-            {member.user.name}
-          </div>
-        ))}
-      </div>
-      {currentUser.id === group.created_by && (
-        <>
-          <button onClick={handleUpdateGroupClick}>Update Group</button>
-          <button onClick={handleDeleteGroupClick}>Delete Group</button>
-          </>
-      )}
-      <UpdateGroupFormModal showModal={showUpdateModal} setShowModal={setShowUpdateModal} groupId={groupId} />
-      <DeleteGroupModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} groupId={groupId} />
-    </div>
-  );
-}
+            {/* <button onClick={handleAddExpenseClick}>Add Expense</button>
+            <AddExpenseFormModal showModal={showAddExpenseModal} setShowModal={setShowAddExpenseModal} groupId={groupId} /> */}
+        </div>
+    );
+};
 
 export default GroupDetails;
