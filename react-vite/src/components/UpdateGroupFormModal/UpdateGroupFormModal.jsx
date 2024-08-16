@@ -35,6 +35,7 @@ const UpdateGroupFormModal = ({ groupId }) => {
         };
 
         dispatch(updateGroupThunk(groupId, updatedGroup));
+        closeModal()
     };
 
     const handleFriendSelection = (friendId) => {

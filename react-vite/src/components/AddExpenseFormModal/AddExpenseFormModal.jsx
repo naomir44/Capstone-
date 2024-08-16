@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addExpenseThunk } from '../../redux/expense';
 import './AddExpenseFormModal.css';
 import { fetchGroupDeets } from '../../redux/groups';
+import { useModal } from '../../context/Modal';
 
-const AddExpenseFormModal = ({ showModal, setShowModal, groupId }) => {
+const AddExpenseFormModal = ({ groupId }) => {
     const dispatch = useDispatch();
     const group = useSelector(state => state.groups[groupId]);
     const [description, setDescription] = useState('');
@@ -12,13 +13,9 @@ const AddExpenseFormModal = ({ showModal, setShowModal, groupId }) => {
     const [date, setDate] = useState('');
     const [splitMethod, setSplitMethod] = useState('equal');
     const [selectedMembers, setSelectedMembers] = useState([]);
-    const [payerId, setPayerId] = useState(null);
-
-    useEffect(() => {
-        if (group && group.members.length > 0) {
-            setPayerId(group.members[0].id); // Default payer to the first member in the list
-        }
-    }, [group]);
+    const [customShares, setCustomShares] = useState({});
+    const { closeModal } = useModal();
+    const user = useSelector(state => state.session.user);
 
     const handleMemberToggle = (memberId) => {
         if (selectedMembers.includes(memberId)) {
@@ -26,6 +23,13 @@ const AddExpenseFormModal = ({ showModal, setShowModal, groupId }) => {
         } else {
             setSelectedMembers([...selectedMembers, memberId]);
         }
+    };
+console.log(selectedMembers)
+    const handleCustomShareChange = (memberId, value) => {
+        setCustomShares({
+            ...customShares,
+            [memberId]: parseFloat(value) || 0,
+        });
     };
 
     const handleSubmit = (e) => {
@@ -36,8 +40,9 @@ const AddExpenseFormModal = ({ showModal, setShowModal, groupId }) => {
             amount: parseFloat(amount),
             date,
             split_method: splitMethod,
-            payer_id: payerId,
+            payer_id: user.id,
             members: selectedMembers,
+            ...(splitMethod === 'exact' && { shares: customShares })
         };
         dispatch(addExpenseThunk(newExpense, groupId));
         dispatch(fetchGroupDeets(groupId));
@@ -46,16 +51,14 @@ const AddExpenseFormModal = ({ showModal, setShowModal, groupId }) => {
         setDate('');
         setSplitMethod('equal');
         setSelectedMembers([]);
-        setPayerId(null);
-        setShowModal(false);
+        setCustomShares({})
+        closeModal();
     };
-
-    if (!showModal) return null;
 
     return (
         <div className="add-expense-modal-background">
             <div className="add-expense-modal-content">
-                <button className="close-btn-in-add-expense" onClick={() => setShowModal(false)}>&times;</button>
+                <button className="close-btn-in-add-expense" onClick={() => closeModal()}>&times;</button>
                 <h2>New Expense</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-row">
@@ -86,17 +89,22 @@ const AddExpenseFormModal = ({ showModal, setShowModal, groupId }) => {
                         />
                     </div>
                     <div className="form-row">
-                        <label>Paid by</label>
-                        <select value={payerId} onChange={(e) => setPayerId(e.target.value)} required>
+                        <label>Who do you want to split this expense with?</label>
+                        <div className="members-options">
                             {group?.members.map(member => (
-                                <option key={member.id} value={member.id}>
-                                    {member.name}
-                                </option>
+                                <div
+                                    key={member.id}
+                                    className={`member-option ${selectedMembers.includes(member.user_id) ? 'selected' : ''}`}
+                                    onClick={() => handleMemberToggle(member.user_id)}
+                                >
+                                    <img src={member.member.profile_picture} alt={member.member.name} />
+                                    <span>{member.member.name}</span>
+                                </div>
                             ))}
-                        </select>
+                        </div>
                     </div>
                     <div className="form-row">
-                        <label>Split Method</label>
+                        <label>How do you want to split your expense?</label>
                         <div className="split-options">
                             <button
                                 type="button"
@@ -110,25 +118,28 @@ const AddExpenseFormModal = ({ showModal, setShowModal, groupId }) => {
                                 className={splitMethod === 'exact' ? 'active' : ''}
                                 onClick={() => setSplitMethod('exact')}
                             >
-                                Exact
+                                Custom
                             </button>
                         </div>
                     </div>
-                    <div className="form-row">
-                        <label>Select Members</label>
-                        <div className="members-options">
-                            {group?.members.map(member => (
-                                <div
-                                    key={member.id}
-                                    className={`member-option ${selectedMembers.includes(member.id) ? 'selected' : ''}`}
-                                    onClick={() => handleMemberToggle(member.id)}
-                                >
-                                    <img src={member.profile_picture} alt={member.name} />
-                                    <span>{member.name}</span>
-                                </div>
-                            ))}
+                    {splitMethod === 'exact' && (
+                        <div className="form-row custom-split">
+                            {selectedMembers.map(memberId => {
+                                const member = group.members.find(m => m.user_id === memberId);
+                                return (
+                                    <div key={memberId} className="custom-share-input">
+                                        <label>{member.member.name}</label>
+                                        <input
+                                            type="number"
+                                            value={customShares[memberId] || ''}
+                                            onChange={(e) => handleCustomShareChange(memberId, e.target.value)}
+                                            required
+                                        />
+                                    </div>
+                                );
+                            })}
                         </div>
-                    </div>
+                    )}
                     <button className="submit-btn" type="submit">Add Expense</button>
                 </form>
             </div>

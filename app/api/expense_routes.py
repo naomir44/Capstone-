@@ -9,7 +9,7 @@ def calculate_user_expenses(user_id):
     total_paid = db.session.query(
     db.func.coalesce(db.func.sum(Payment.amount), 0).label('total_paid')
     ).filter(
-        Payment.payer_id == user_id,
+        Payment.payee_id == user_id,
         Payment.status == 'paid'
     ).scalar()
 
@@ -17,7 +17,7 @@ def calculate_user_expenses(user_id):
     total_owed = db.session.query(
         db.func.coalesce(db.func.sum(Payment.amount), 0).label('total_owed')
     ).filter(
-        Payment.payee_id == user_id,
+        Payment.payer_id == user_id,
         Payment.status == 'pending'
         ).scalar()
 
@@ -33,20 +33,17 @@ def calculate_user_expenses(user_id):
 def get_my_balance():
     user_id = current_user.id
 
-    # Summary of balance
     balance_summary = calculate_user_expenses(user_id)
 
-    # Expenses where the user owes money (i.e., payee_id is the current user)
     expenses_you_owe = db.session.query(Expense).join(Payment).filter(
-        Payment.payee_id != user_id,
-        Payment.payer_id == user_id,
+        Payment.payer_id != user_id,
+        Payment.payee_id == user_id,
         Payment.status == 'pending'
     ).all()
 
-    # Expenses where the user is owed money (i.e., payer_id is the current user)
     expenses_owed_to_you = db.session.query(Expense).join(Payment).filter(
-        Payment.payer_id != user_id,
-        Payment.payee_id == user_id,
+        Payment.payee_id != user_id,
+        Payment.payer_id == user_id,
         Payment.status == 'pending'
     ).all()
 
@@ -79,6 +76,7 @@ def add_expense():
     amount = data.get('amount')
     date_str = data.get('date')
     split_method = data.get('split_method')
+    selected_members = data.get('members', [])
 
     date = datetime.strptime(date_str, "%Y-%m-%d").date()
 
@@ -93,16 +91,18 @@ def add_expense():
     db.session.add(new_expense)
     db.session.commit()
 
-    group = Group.query.get(group_id)
-
     if split_method == 'equal':
-        share = amount / len(group.members)
-        for member in group.members:
-            if member.id != current_user.id:
+        total_members = len(selected_members)
+        if total_members == 0:
+            abort(400, description="No members selected for equal split")
+
+        share = amount / (total_members + 1)
+        for member_id in selected_members:
+            if member_id != current_user.id:
                 payment = Payment(
                     expense_id=new_expense.id,
                     payer_id=current_user.id,
-                    payee_id=member.id,
+                    payee_id=member_id,
                     amount=share,
                     status='pending'
                 )
@@ -143,16 +143,20 @@ def update_expense(expense_id):
     Payment.query.filter_by(expense_id=expense.id).delete()
 
     # Recalculate and add new payments based on updated expense details
-    group = Group.query.get(expense.group_id)
+    selected_members = data.get('members', [])
 
     if expense.split_method == 'equal':
-        share = expense.amount / len(group.members)
-        for member in group.members:
-            if member.id != current_user.id:
+        total_members = len(selected_members)
+        if total_members == 0:
+            abort(400, description="No members selected for equal split")
+
+        share = expense.amount / (total_members + 1)
+        for member_id in selected_members:
+            if member_id != current_user.id:
                 payment = Payment(
                     expense_id=expense.id,
                     payer_id=current_user.id,
-                    payee_id=member.id,
+                    payee_id=member_id,
                     amount=share,
                     status='pending'
                 )
@@ -188,7 +192,7 @@ def delete_expense(expense_id):
 @login_required
 def pay_expense(expense_id):
     expense = Expense.query.get_or_404(expense_id)
-    payment = next((payment for payment in expense.payments if payment.payer_id == current_user.id), None)
+    payment = next((payment for payment in expense.payments if payment.payee_id == current_user.id), None)
     data = request.get_json()
 
     payment.status = data.get('status', payment.status)

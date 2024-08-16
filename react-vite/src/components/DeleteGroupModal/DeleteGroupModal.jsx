@@ -12,6 +12,7 @@ const DeleteGroupModal = ({ groupId }) => {
     const handleDelete = async () => {
         await dispatch(deleteGroupThunk(groupId));
             navigate('/')
+            closeModal();
     };
 
     return (

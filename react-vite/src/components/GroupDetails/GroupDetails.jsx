@@ -12,7 +12,6 @@ const GroupDetails = () => {
     let { groupId } = useParams();
     const dispatch = useDispatch();
     const group = useSelector(state => state.groups[groupId]);
-    const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
     const [showEditOptions, setShowEditOptions] = useState(false);
 
     useEffect(() => {
@@ -22,10 +21,6 @@ const GroupDetails = () => {
     if (!group) {
         return <h1>Loading...</h1>;
     }
-
-    const handleAddExpenseClick = () => {
-        setShowAddExpenseModal(true);
-    };
 
     const toggleEditOptions = () => {
         setShowEditOptions(!showEditOptions);
@@ -40,6 +35,10 @@ const GroupDetails = () => {
                 <div className="group-info">
                     <div className="group-name-edit-container">
                         <h2 className="group-name-in-group-deets">{group.name}</h2>
+                        <div><OpenModalButton
+                            modalComponent={<AddExpenseFormModal groupId={group.id} />}
+                            buttonText={'Add an expense'}
+                            /></div>
                         <div className={`group-actions-dropdown ${showEditOptions ? 'show' : ''}`}>
                             <button onClick={toggleEditOptions} className="dropdown-btn">
                                 Edit
@@ -87,12 +86,14 @@ const GroupDetails = () => {
                 {group.expenses.length > 0 ? (
                     group.expenses.map(expense => (
                         <div key={expense.id} className="payment-item">
-                            <div>{expense.description}</div>
+                            <div>{expense.description} Paid By: {expense.payer}</div>
                             <div>Total: {expense.amount}</div>
                             {expense.payments.map(payment => (
+                                payment.status === 'paid' && (
                                <div key={payment.id}>
-                                {payment.payer} paid {payment.payee} ${payment.amount.toFixed(2)}
+                                {payment.payee} paid {payment.payer} ${payment.amount.toFixed(2)}
                                </div>
+                                )
                             ))}
                         </div>
                     ))
@@ -101,8 +102,8 @@ const GroupDetails = () => {
                 )}
             </div>
 
-            <button onClick={handleAddExpenseClick}>Add Expense</button>
-            <AddExpenseFormModal showModal={showAddExpenseModal} setShowModal={setShowAddExpenseModal} groupId={groupId} />
+            {/* <button onClick={handleAddExpenseClick}>Add Expense</button>
+            <AddExpenseFormModal showModal={showAddExpenseModal} setShowModal={setShowAddExpenseModal} groupId={groupId} /> */}
         </div>
     );
 };

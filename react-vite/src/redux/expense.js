@@ -76,7 +76,6 @@ export const updateExpenseThunk = (updatedData, expenseId) => async (dispatch) =
   if (response.ok) {
       const updatedExpense = await response.json();
       dispatch(updateExpense(updatedExpense));
-      dispatch(fetchGroupDeets(updateExpense.group_id));
       dispatch(fetchBalance());
       return updatedExpense
   } else {
@@ -84,14 +83,13 @@ export const updateExpenseThunk = (updatedData, expenseId) => async (dispatch) =
   }
 };
 
-export const deleteExpenseThunk = (expenseId, groupId) => async (dispatch) => {
+export const deleteExpenseThunk = (expenseId) => async (dispatch) => {
   const response = await fetch(`/api/expenses/delete/${expenseId}/`, {
       method: 'DELETE'
   });
 
   if (response.ok) {
       dispatch(deleteExpense(expenseId));
-      dispatch(fetchGroupDeets(groupId));
       dispatch(fetchBalance());
       return
   } else {
