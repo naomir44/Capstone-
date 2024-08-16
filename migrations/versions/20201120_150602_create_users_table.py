@@ -98,8 +98,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['expense_id'], ['expenses.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['payer_id'], ['users.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['payee_id'], ['users.id'], ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('id'),
-    schema=SCHEMA
+    sa.PrimaryKeyConstraint('id')
     )
 
     if environment == "production":
