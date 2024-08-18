@@ -6,7 +6,7 @@
   flex-direction: column;
   background-color: #f0f4f8;
   margin-left: 100px;
-  margin-bottom: 70px;
+  margin-bottom: 20px;
 }
 
 .group-deets-header {
@@ -36,7 +36,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 620px;
+  justify-content: space-between;
+  margin-right: 60px;
 }
 
 .group-name-in-group-deets {
@@ -55,7 +56,7 @@
 }
 
 .dropdown-btn {
-  background-color: #1abc9c;
+  background-color: #f0ad4e;
   color: white;
   border: none;
   padding: 8px 14px;
@@ -66,7 +67,7 @@
 }
 
 .dropdown-btn:hover {
-  background-color: #16a085;
+  background-color: #ec971f;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -118,6 +119,11 @@
   object-fit: cover;
   border: 2px solid #ffffff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin: 0 5px;
+}
+
+.member-name {
+  margin: 0 5px;
 }
 
 .more-members {
@@ -199,6 +205,8 @@
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  justify-content: space-between;
+  margin-right: 60px;
 }
 
 .feed-header h3 {
@@ -241,4 +249,34 @@
   font-size: 14px;
   transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
   margin-top: 0;
+}
+
+.payment-item-top {
+display: flex;
+justify-content: space-between;
+margin-bottom: 5px;
+}
+
+.payment-description {
+  font-size: 18px;
+  font-weight: bold;
+  color: #555;
+}
+
+.payment-payer-name {
+  color: #555;
+  font-weight: bold;
+}
+.payment-paid-by {
+  display: flex;
+  gap: 5px;
+}
+.someone-made-payment {
+  color: #1abc9c;
+}
+
+.payment-item-bottom {
+  display: flex;
+  justify-content: space-between;
+
 }

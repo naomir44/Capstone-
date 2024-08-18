@@ -51,9 +51,14 @@ const SideBar = ({ sidebarOpen }) => {
               <button onClick={handlePictureUpdate}>Update Picture</button>
             )}
           </div>
-          <div className='home-button'>
+         <div className='home-and-logout'>
+         <div className='home-button'>
             <NavLink to="/"><IoHomeSharp className='home-icon' />Home</NavLink>
           </div>
+          <div className='logout-button'>
+            <button onClick={logout} className="navigation-button-logout">Log Out</button>
+          </div>
+         </div>
           <div className='balances-button'>
             <NavLink to={`/balances/${user?.id}/my-balance`}><BsCreditCardFill />Expenses</NavLink>
           </div>
@@ -65,9 +70,6 @@ const SideBar = ({ sidebarOpen }) => {
           </div>
           <div className='friend-requests-on-sidebar'>
             <AcceptFriend />
-          </div>
-          <div className='logout-button'>
-            <button onClick={logout} className="navigation-button-logout">Log Out</button>
           </div>
         </div>
       }

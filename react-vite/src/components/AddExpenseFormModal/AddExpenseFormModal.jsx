@@ -80,7 +80,7 @@ console.log(selectedMembers)
                         />
                     </div>
                     <div className="form-row">
-                        <label>Date</label>
+                        <label>Pay By</label>
                         <input
                             type="date"
                             value={date}

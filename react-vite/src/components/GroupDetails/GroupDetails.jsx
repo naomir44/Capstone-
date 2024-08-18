@@ -42,6 +42,10 @@ const GroupDetails = () => {
         setShowEditOptions(!showEditOptions);
     };
 
+    const sortByDateDescending = (a, b) => {
+        return new Date(b.date) - new Date(a.date);
+    };
+
     return (
         <>
         <div className="group-deets-container">
@@ -73,6 +77,7 @@ const GroupDetails = () => {
                     <div className="group-members-overview">
                         <div className="members-header">Members</div>
                         <div className="group-member-avatars">
+                            <img src={group.creator.profile_picture} alt="" className="member-avatar" />
                             {group.members?.slice(0, 5).map(member => (
                                 <img
                                     key={member.id}
@@ -88,7 +93,10 @@ const GroupDetails = () => {
                             )}
                         </div>
                         <div className="group-member-names">
-                            {group.members?.map(member => member.member.name).join(", ")}
+                            <span className="member-name">{group.creator.name}</span>
+                            {group.members?.map(member => (
+                            <span key={member.id} className="member-name">{member.member.name}</span>)
+                            )}
                         </div>
                     </div>
                 </div>
@@ -106,19 +114,27 @@ const GroupDetails = () => {
                    </div>
                 </div>
                 {group.expenses.length > 0 ? (
-                    group.expenses.map(expense => (
-                        <div key={expense.id} className="payment-item">
-                            <div>{expense.description} Paid By: {expense.payer}</div>
-                            <div>Total: {expense.amount}</div>
-                            {expense.payments.map(payment => (
-                                payment.status === 'paid' && (
-                                    <div key={payment.id}>
-                                        {payment.payee} paid {payment.payer} ${payment.amount.toFixed(2)}
-                                    </div>
-                                )
-                            ))}
-                        </div>
-                    ))
+                    group.expenses
+                        .sort(sortByDateDescending)
+                        .map(expense => (
+                            <div key={expense.id} className="payment-item">
+                                <div className="payment-item-top">
+                                    <div className="payment-description">{expense.description}</div>
+                                <div className="payment-paid-by"> Paid By:
+                                <span className="payment-payer-name"> {expense.payer}</span>
+                                </div>
+                                </div>
+                                <div className="payment-item-bottom">Total: ${expense.amount}
+                                {expense.payments.map(payment => (
+                                    payment.status === 'paid' && (
+                                        <div className="someone-made-payment" key={payment.id}>
+                                            {payment.payee} paid {payment.payer} ${payment.amount.toFixed(2)}
+                                        </div>
+                                    )
+                                ))}
+                                </div>
+                            </div>
+                        ))
                 ) : (
                     <p>No payments made yet.</p>
                 )}

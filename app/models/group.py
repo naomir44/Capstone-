@@ -26,6 +26,6 @@ class Group(db.Model):
             'image_url': self.image_url,
             'members': [member.to_dict() for member in self.members],
             'expenses': [expense.to_dict() for expense in self.expenses],
-            'creator': {'id': self.creator.id, 'name': self.creator.name},
+            'creator': {'id': self.creator.id, 'name': self.creator.name, 'profile_picture': self.creator.profile_picture},
             'images': [image.to_dict() for image in self.images]
         }

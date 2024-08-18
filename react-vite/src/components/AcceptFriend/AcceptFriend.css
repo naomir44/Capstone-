@@ -1,0 +1,46 @@
+.friend-profile-picture {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.sender-name-requests{
+  font-size: 16px;
+  color: #333333;
+  display: flex;
+  align-self: center;
+  margin-right: 8px;
+}
+
+.accept-button {
+  margin-top: 0px;
+  padding: 5px 5px;
+  font-size: 12px;
+  color: white;
+  background-color: #1abc9c;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.friend-requests {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  color: #333333;
+  gap: 5px;
+}
+
+.friend-requests-header {
+  font-size: 16px;
+  margin-bottom: 10px;
+  font-weight: normal;
+  color: #555555;
+  display: flex;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
+}

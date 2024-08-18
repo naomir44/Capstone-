@@ -16,7 +16,7 @@
   border-radius: 10px;
   padding: 30px;
   width: 90%;
-  max-width: 400px; /* Limit max width for larger screens */
+  max-width: 400px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   position: relative;
 }
