@@ -35,7 +35,7 @@ const UpdateGroupFormModal = ({ groupId }) => {
         };
 
         dispatch(updateGroupThunk(groupId, updatedGroup));
-        closeModal()
+        closeModal();
     };
 
     const handleFriendSelection = (friendId) => {
@@ -54,53 +54,57 @@ const UpdateGroupFormModal = ({ groupId }) => {
         }
     };
 
-
     return (
         <div className="update-group-modal-background">
             <div className="update-group-modal-content">
                 <button className="update-group-close-btn" onClick={() => closeModal()}>&times;</button>
                 <form onSubmit={handleSubmit}>
-                    <label>
+                    <label className="update-group-modal-label">
                         Group Name:
                         <input
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             required
+                            className="update-group-modal-input"
                         />
                     </label>
-                    <label>
+                    <label className="update-group-modal-label">
                         Description:
                         <textarea
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
+                            className="update-group-modal-textarea"
                         />
                     </label>
-                    <label>
+                    <label className="update-group-modal-label">
                         Group Image URL:
                         <input
                             type="text"
                             value={imageUrl}
                             onChange={(e) => setImageUrl(e.target.value)}
+                            className="update-group-modal-input"
                         />
                     </label>
-                    <div>
-                        <h3>Select Friends to Add:</h3>
-                        {acceptedFriends.map(friend => {
-                            const friendId = friend.user_id === currentUser.id ? friend.friend_id : friend.user_id;
-                            return (
-                                <div key={friend.id}>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedFriends.includes(friendId)}
-                                        onChange={() => handleFriendSelection(friendId)}
-                                    />
-                                    {getFriendName(friend)}
-                                </div>
-                            );
-                        })}
+                    <div className="update-group-modal-friend-selection">
+                        <h3 className="update-group-modal-selection-heading">Select Friends to Add:</h3>
+                        <div className="update-group-modal-friends-options">
+                            {acceptedFriends.map(friend => {
+                                const friendId = friend.user_id === currentUser.id ? friend.friend_id : friend.user_id;
+                                return (
+                                    <div
+                                        key={friend.id}
+                                        className={`update-group-modal-friend-option ${selectedFriends.includes(friendId) ? 'selected' : ''}`}
+                                        onClick={() => handleFriendSelection(friendId)}
+                                    >
+                                        <img src={friend.profile_picture || '/default-profile.png'} alt={getFriendName(friend)} />
+                                        <span>{getFriendName(friend)}</span>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
-                    <button type="submit">Update Group</button>
+                    <button type="submit" className="update-group-modal-submit-button">Update Group</button>
                 </form>
             </div>
         </div>

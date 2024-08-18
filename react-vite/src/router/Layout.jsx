@@ -32,7 +32,7 @@ export default function Layout() {
         </button>
         </>
         }
-        <div className={`main-content ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+        <div className={`main-content ${user && sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
           <Navigation />
           {isLoaded && <Outlet />}
         </div>

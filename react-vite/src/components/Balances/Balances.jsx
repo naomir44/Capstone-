@@ -18,12 +18,12 @@ const Balances = () => {
 
   const toggleEditOptions = () => {
     setShowEditOptions(!showEditOptions);
-};
+  };
 
   const handlePayExpense = async (expenseId) => {
-    const payment = {status: 'paid'}
-    await dispatch(fetchPayExpense(payment, expenseId))
-    await dispatch(fetchBalance())
+    const payment = { status: 'paid' };
+    await dispatch(fetchPayExpense(payment, expenseId));
+    await dispatch(fetchBalance());
   };
 
   const calculateTotalYouOwe = (expenses) => {
@@ -40,7 +40,7 @@ const Balances = () => {
       const userTotal = userPayments.reduce((sum, payment) => sum + payment.amount, 0);
       return total + userTotal;
     }, 0);
-  }
+  };
 
   return (
     <div className="balances-container">
@@ -58,19 +58,18 @@ const Balances = () => {
         <h3>Expenses You Owe</h3>
         {balance?.expenses_you_owe.length > 0 ? (
           balance.expenses_you_owe.map(expense => (
-            <div key={expense.id} className="expense-item">
-              <span>{expense.description}</span>
-              <div>
-                {expense.payments.map(payment => (
-                  payment.payee_id === user?.id && (
-                  <div key={payment.id}>
-                    ${payment.amount.toFixed(2)}
-                    </div>
-                 )
-                ))}
-              </div>
-              <div className="expense-actions">
-                <button onClick={() => handlePayExpense(expense.id)}>Pay</button>
+            <div key={expense.id} className="expense-you-owe-item">
+              <div className="expense-details">
+                <span>{expense.description}</span>
+                <span className="expense-amount">
+                  {expense.payments
+                    .filter(payment => payment.payee_id === user?.id)
+                    .map(payment => `$${payment.amount.toFixed(2)}`)
+                    .join(', ')}
+                </span>
+                <button onClick={() => handlePayExpense(expense.id)} className="pay-button">
+                  Pay
+                </button>
               </div>
             </div>
           ))
@@ -84,31 +83,34 @@ const Balances = () => {
         <h3>Expenses Owed to You</h3>
         {balance?.expenses_owed_to_you.length > 0 ? (
           balance.expenses_owed_to_you.map(expense => (
-            <div key={expense.id} className="expense-item">
-              <div>{expense.description}</div>
+            <div key={expense.id} className="expense-owed-to-you-item">
+              <div className="expense-details">
+                <span>{expense.description}</span>
+                <button onClick={toggleEditOptions} className="expense-dropdown-btn">
+                  Edit
+                </button>
+              </div>
               {expense.payments.map(payment => (
-                <div key={payment.id}>
-                <span> ${payment.amount.toFixed(2)}</span>
-                <span>Owed by: {payment.payee}</span>
+                <div key={payment.id} className="expense-payment">
+                  <span>{payment.payee} owes ${payment.amount.toFixed(2)}</span>
                 </div>
               ))}
-              <div className={`expense-actions-dropdown ${showEditOptions ? 'show' : ''}`}>
-                            <button onClick={toggleEditOptions} className="expense-dropdown-btn">
-                                Edit
-                            </button>
-                            {showEditOptions && (
-                                <div className="expense-dropdown-content">
-                                    <OpenModalButton
-                                    buttonText="Update"
-                                    modalComponent={<UpdateExpenseForm expense={expense}/>}
-                                    />
-                                   <OpenModalButton
-                                   buttonText='Delete'
-                                   modalComponent={<DeleteExpenseModal expenseId={expense.id}/>}
-                                   />
-                                </div>
-                            )}
-                        </div>
+              {showEditOptions && (
+                <div className="expense-dropdown-content">
+                  <div className='expense-edit-button-div'>
+                  <OpenModalButton
+                    buttonText="Update"
+                    modalComponent={<UpdateExpenseForm expense={expense} />}
+                  />
+                  </div>
+                  <div className='expense-edit-button-div'>
+                  <OpenModalButton
+                    buttonText="Delete"
+                    modalComponent={<DeleteExpenseModal expenseId={expense.id} />}
+                  />
+                  </div>
+                </div>
+              )}
             </div>
           ))
         ) : (
@@ -118,6 +120,6 @@ const Balances = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Balances;

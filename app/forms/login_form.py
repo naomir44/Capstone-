@@ -22,7 +22,11 @@ def password_matches(form, field):
     if not user.check_password(password):
         raise ValidationError('Password was incorrect.')
 
+def check_whitespace(form, field):
+    if field.data.strip() != field.data:
+        raise ValidationError('Remove whitespace from this field.')
+
 
 class LoginForm(FlaskForm):
-    email = StringField('email', validators=[DataRequired(), user_exists])
-    password = StringField('password', validators=[DataRequired(), password_matches])
+    email = StringField('email', validators=[DataRequired(),check_whitespace, user_exists])
+    password = StringField('password', validators=[DataRequired(),check_whitespace, password_matches])

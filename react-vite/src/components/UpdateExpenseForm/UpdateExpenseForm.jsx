@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateExpenseThunk } from '../../redux/expense';
 import { useModal } from '../../context/Modal';
+import './UpdateExpenseForm.css';
 
 const UpdateExpenseForm = ({ expense }) => {
     const dispatch = useDispatch();
