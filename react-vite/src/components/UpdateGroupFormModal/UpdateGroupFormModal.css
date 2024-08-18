@@ -15,10 +15,9 @@
   background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 500px;
-  box-sizing: border-box;
+  width: 600px;
+  max-width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -27,95 +26,103 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: transparent;
+  background: none;
   border: none;
   font-size: 24px;
   cursor: pointer;
   color: #555;
 }
 
-.update-group-close-btn:hover {
-  color: #000;
-}
-
-.update-group-modal-content form {
-  display: flex;
-  flex-direction: column;
-}
-
-.update-group-modal-content label {
-  margin-bottom: 15px;
-  color: #333333;
-  font-size: 14px;
-}
-
-.update-group-modal-content input[type="text"],
-.update-group-modal-content textarea {
-  padding: 8px;
-  border: 1px solid #dddddd;
-  border-radius: 4px;
-  font-size: 14px;
-  width: 100%;
-  margin-top: 5px;
+.update-group-modal-content h1.update-group-header {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.update-group-modal-content input[type="text"]:focus,
-.update-group-modal-content textarea:focus {
-  border-color: #007bff;
-  outline: none;
+.update-group-modal-label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+  font-weight: 600;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.update-group-modal-input,
+.update-group-modal-textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 15px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .update-group-modal-friend-selection {
-  margin-top: 20px;
-}
-
-.update-group-modal-selection-heading {
-  margin-bottom: 10px;
-  font-size: 18px;
-  color: #333333;
+  margin-top: 15px;
 }
 
 .update-group-modal-friends-options {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  margin-top: 10px;
 }
 
 .update-group-modal-friend-option {
   display: flex;
   align-items: center;
-  padding: 5px 10px;
-  background-color: #f0f0f0;
+  gap: 10px;
+  padding: 10px;
   border-radius: 4px;
+  background-color: #f0f0f0;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.update-group-modal-friend-option.selected {
-  background-color: #007bff;
-  color: white;
+.update-group-modal-friend-option:hover {
+  background-color: #c3c0c08f;
+  transform: scale(1.05);
 }
 
 .update-group-modal-friend-option img {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  margin-right: 10px;
+  object-fit: cover;
+}
+
+.update-group-modal-friend-option.selected {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+.update-group-modal-friend-option.selected:hover {
+  background-color: #ec971f;
 }
 
 .update-group-modal-submit-button {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: #4CAF50;
+  width: 100%;
+  padding: 10px 0;
+  background-color: #1abc9c;
   color: white;
   border: none;
   border-radius: 4px;
-  cursor: pointer;
   font-size: 16px;
+  cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-top: 20px;
 }
 
 .update-group-modal-submit-button:hover {
-  background-color: #45a049;
+  background-color: #16a085;
+  transform: scale(1.05);
+  color: white;
+}
+
+.form-errors {
+  color: red;
 }

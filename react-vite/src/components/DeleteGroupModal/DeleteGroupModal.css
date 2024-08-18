@@ -20,11 +20,12 @@
   max-width: 400px;
   text-align: center;
   position: relative;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .delete-group-modal-content h2 {
   font-size: 24px;
-  color: #d9534f;
+  color: #333;
   margin-bottom: 15px;
 }
 
@@ -36,7 +37,7 @@
 
 .delete-group-modal-content .yes-delete-group-btn {
   padding: 10px 20px;
-  background-color: #d9534f;
+  background-color: #6c757d;
   color: white;
   border: none;
   border-radius: 4px;
@@ -47,7 +48,7 @@
 }
 
 .delete-group-modal-content .yes-delete-group-btn:hover {
-  background-color: #c9302c;
+  background-color: #5a6268;
 }
 
 .delete-group-modal-content .no-dont-delete-group {

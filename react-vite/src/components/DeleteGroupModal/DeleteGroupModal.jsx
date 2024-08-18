@@ -18,6 +18,7 @@ const DeleteGroupModal = ({ groupId }) => {
     return (
         <div className="delete-group-modal-background">
             <div className="delete-group-modal-content">
+            <button className="modal-close-btn" onClick={closeModal}>&times;</button>
                 <h2 className='confirm-group-deletion-btn'>Confirm Delete</h2>
                 <p className='confirm-group-deletion-question'>Are you sure you want to delete this group?</p>
                 <button className='yes-delete-group-btn' onClick={handleDelete}>Yes, Delete</button>

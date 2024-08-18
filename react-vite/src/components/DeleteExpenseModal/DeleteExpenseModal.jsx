@@ -15,6 +15,7 @@ const DeleteExpenseModal = ({ expenseId }) => {
     return (
         <div className="delete-expense-modal-background">
             <div className="delete-expense-modal-content">
+            <button className="modal-close-btn" onClick={closeModal}>&times;</button>
                 <h2 className='confirm-expense-deletion-btn'>Confirm Delete</h2>
                 <p className='confirm-expense-deletion-question'>Are you sure you want to delete this expense?</p>
                 <button className='yes-delete-expense-btn' onClick={handleDelete}>Yes, Delete</button>

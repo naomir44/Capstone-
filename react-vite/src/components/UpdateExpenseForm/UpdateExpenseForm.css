@@ -78,11 +78,17 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  border: none;
 }
 
 .member-option.selected {
-  background-color: #007bff;
+  background-color: #f0ad4e;
   color: white;
+  border: none;
+}
+
+.member-option.selected:hover {
+  background-color: #ec971f;
 }
 
 .member-option img {
@@ -105,15 +111,16 @@
   background-color: #f9f9f9;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  border: none;
 }
 
 .split-options button.active {
-  background-color: #007bff;
+  background-color: #f0ad4e;
   color: white;
 }
 
 .split-options button:hover {
-  background-color: #007bff;
+  background-color: #ec971f;
   color: white;
 }
 
@@ -145,7 +152,7 @@
 .submit-btn {
   width: 100%;
   padding: 10px;
-  background-color: #4CAF50;
+  background-color: #1abc9c;
   color: white;
   border: none;
   border-radius: 4px;
@@ -155,5 +162,7 @@
 }
 
 .submit-btn:hover {
-  background-color: #45a049;
+  background-color: #16a085;
+  transform: scale(1.05);
+  color: white;
 }

@@ -14,6 +14,7 @@ const UpdateGroupFormModal = ({ groupId }) => {
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
+    const [errors, setErrors] = useState({});
     const { closeModal } = useModal()
 
     useEffect(() => {
@@ -27,6 +28,26 @@ const UpdateGroupFormModal = ({ groupId }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const validationErrors = {}
+
+        if (name.trim().length === 0) validationErrors.name = 'Give your group a name';
+        if (description.trim().length === 0) validationErrors.description = 'Provide a description for your group';
+        if (selectedFriends.length === 0) validationErrors.selectedFriends = 'Select friends to be apart of your group';
+
+        const isValidUrl = (imageUrl) => {
+            try {
+              new URL(imageUrl);
+              return true;
+            } catch {
+              return false;
+            }
+          };
+        if (!imageUrl.trim() || !isValidUrl(imageUrl.trim())) validationErrors.imageUrl = 'Add a valid group image';
+
+        if (Object.values(validationErrors).length > 0) {
+            setErrors(validationErrors)
+            return
+        } else {
         const updatedGroup = {
             name,
             description,
@@ -36,7 +57,8 @@ const UpdateGroupFormModal = ({ groupId }) => {
 
         dispatch(updateGroupThunk(groupId, updatedGroup));
         closeModal();
-    };
+    }
+}
 
     const handleFriendSelection = (friendId) => {
         setSelectedFriends(prev =>
@@ -57,28 +79,30 @@ const UpdateGroupFormModal = ({ groupId }) => {
     return (
         <div className="update-group-modal-background">
             <div className="update-group-modal-content">
+                <h1 className='update-group-header'>Update Group</h1>
                 <button className="update-group-close-btn" onClick={() => closeModal()}>&times;</button>
                 <form onSubmit={handleSubmit}>
                     <label className="update-group-modal-label">
-                        Group Name:
+                        Group Name
                         <input
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            required
                             className="update-group-modal-input"
                         />
                     </label>
+                    {errors.name && <p className='form-errors'>{errors.name}</p>}
                     <label className="update-group-modal-label">
-                        Description:
+                        Description
                         <textarea
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             className="update-group-modal-textarea"
                         />
                     </label>
+                    {errors.description && <p className='form-errors'>{errors.description}</p>}
                     <label className="update-group-modal-label">
-                        Group Image URL:
+                        Group Image URL
                         <input
                             type="text"
                             value={imageUrl}
@@ -86,6 +110,7 @@ const UpdateGroupFormModal = ({ groupId }) => {
                             className="update-group-modal-input"
                         />
                     </label>
+                    {errors.imageUrl && <p className='form-errors'>{errors.imageUrl}</p>}
                     <div className="update-group-modal-friend-selection">
                         <h3 className="update-group-modal-selection-heading">Select Friends to Add:</h3>
                         <div className="update-group-modal-friends-options">
@@ -104,6 +129,7 @@ const UpdateGroupFormModal = ({ groupId }) => {
                             })}
                         </div>
                     </div>
+                    {errors.selectedFriends && <p className='form-errors'>{errors.selectedFriends}</p>}
                     <button type="submit" className="update-group-modal-submit-button">Update Group</button>
                 </form>
             </div>

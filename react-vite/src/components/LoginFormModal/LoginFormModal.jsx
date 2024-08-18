@@ -47,6 +47,7 @@ function LoginFormModal() {
 
   return (
     <div className="login-form-modal-container">
+      <button className="close-signin-modal" onClick={() => closeModal()}>&times;</button>
       <h1 className="login-form-modal-heading">Log In</h1>
       <form onSubmit={handleSubmit} className="login-form-modal-form">
         <label className="login-form-modal-label">
@@ -55,7 +56,6 @@ function LoginFormModal() {
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
             className="login-form-modal-input"
           />
         </label>
@@ -66,7 +66,6 @@ function LoginFormModal() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
             className="login-form-modal-input"
           />
         </label>

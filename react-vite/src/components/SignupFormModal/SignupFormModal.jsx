@@ -24,6 +24,10 @@ function SignupFormModal() {
       });
     }
 
+    // const profilePicToUpload = profilePicture.trim()
+    //   ? profilePicture.trim()
+    //   : '../../../public/Default_pfp.jpg';
+
     const serverResponse = await dispatch(
       thunkSignup({
         email,
@@ -42,6 +46,7 @@ function SignupFormModal() {
 
   return (
     <div className="signup-form-modal-container">
+      <button className="close-signup-modal" onClick={() => closeModal()}>&times;</button>
       <h1 className="signup-form-modal-heading">Sign Up</h1>
       {errors.server && <p className="signup-form-modal-error">{errors.server}</p>}
       <form onSubmit={handleSubmit} className="signup-form-modal-form">
@@ -51,7 +56,6 @@ function SignupFormModal() {
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
             className="signup-form-modal-input"
           />
         </label>
@@ -62,7 +66,6 @@ function SignupFormModal() {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            required
             className="signup-form-modal-input"
           />
         </label>
@@ -73,7 +76,6 @@ function SignupFormModal() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
             className="signup-form-modal-input"
           />
         </label>
@@ -84,7 +86,6 @@ function SignupFormModal() {
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            required
             className="signup-form-modal-input"
           />
         </label>
