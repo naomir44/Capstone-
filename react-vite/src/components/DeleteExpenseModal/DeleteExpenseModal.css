@@ -25,7 +25,7 @@
 
 .confirm-expense-deletion-btn {
   font-size: 24px;
-  color: #d9534f;
+  /* background-color: #5a6268; */
   margin-bottom: 15px;
 }
 
@@ -37,7 +37,7 @@
 
 .yes-delete-expense-btn {
   padding: 10px 20px;
-  background-color: #d9534f;
+  background-color: #5a6268;
   color: white;
   border: none;
   border-radius: 4px;
@@ -48,12 +48,12 @@
 }
 
 .yes-delete-expense-btn:hover {
-  background-color: #c9302c;
+  background-color: #5a6268;
 }
 
 .no-dont-delete-expense {
   padding: 10px 20px;
-  background-color: #6c757d;
+  background-color: #5a6268;
   color: white;
   border: none;
   border-radius: 4px;

@@ -12,9 +12,14 @@ function SignupFormPage() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  // const [profilePicture, setProfilePicture] = useState('');
   const [errors, setErrors] = useState({});
 
   if (sessionUser) return <Navigate to="/" replace={true} />;
+
+  // const profilePicToUpload = profilePicture.trim()
+  // ? profilePicture.trim()
+  // : '../../../public/Default_pfp.jpg';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +36,7 @@ function SignupFormPage() {
         email,
         name,
         password,
+        // profilePicture: profilePicToUpload
       })
     );
 
@@ -53,7 +59,6 @@ function SignupFormPage() {
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
               className="signup-form-input"
             />
           </label>
@@ -64,7 +69,6 @@ function SignupFormPage() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
               className="signup-form-input"
             />
           </label>
@@ -75,7 +79,6 @@ function SignupFormPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
               className="signup-form-input"
             />
           </label>
@@ -86,7 +89,6 @@ function SignupFormPage() {
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              required
               className="signup-form-input"
             />
           </label>

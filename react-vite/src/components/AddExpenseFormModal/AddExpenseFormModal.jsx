@@ -15,6 +15,7 @@ const AddExpenseFormModal = ({ groupId }) => {
     const [selectedMembers, setSelectedMembers] = useState([]);
     const [customShares, setCustomShares] = useState({});
     const { closeModal } = useModal();
+    const [errors, setErrors] = useState({});
     const user = useSelector(state => state.session.user);
 
     const handleMemberToggle = (memberId) => {
@@ -24,7 +25,6 @@ const AddExpenseFormModal = ({ groupId }) => {
             setSelectedMembers([...selectedMembers, memberId]);
         }
     };
-console.log(selectedMembers)
     const handleCustomShareChange = (memberId, value) => {
         setCustomShares({
             ...customShares,
@@ -32,9 +32,27 @@ console.log(selectedMembers)
         });
     };
 
+    const validateForm = () => {
+        const validationErrors = {}
+
+        if (description.trim().length === 0) validationErrors.description = "Give this expense a description";
+        if (amount.trim().length === 0) validationErrors.amount = "Provide an amount for this expense";
+        if (!date) validationErrors.date = "Tell members when this expense need to be paid";
+        if (!splitMethod) validationErrors.splitMethod = "How do you want to split this expense";
+        if (selectedMembers.length === 0) validationErrors.selectedMembers = "Select members to split this expense with";
+
+        return validationErrors
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newExpense = {
+        const validationErrors = validateForm()
+
+        if (Object.values(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return
+        } else {
+            const newExpense = {
             group_id: +groupId,
             description,
             amount: parseFloat(amount),
@@ -53,6 +71,7 @@ console.log(selectedMembers)
         setSelectedMembers([]);
         setCustomShares({})
         closeModal();
+        }
     };
 
     return (
@@ -67,27 +86,27 @@ console.log(selectedMembers)
                             type="text"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            required
                         />
                     </div>
+                    {errors.description && <p className='form-errors'>{errors.description}</p>}
                     <div className="form-row">
                         <label>Amount</label>
                         <input
                             type="number"
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
-                            required
                         />
                     </div>
+                    {errors.amount && <p className='form-errors'>{errors.amount}</p>}
                     <div className="form-row">
                         <label>Pay By</label>
                         <input
                             type="date"
                             value={date}
                             onChange={(e) => setDate(e.target.value)}
-                            required
                         />
                     </div>
+                    {errors.date && <p className='form-errors'>{errors.date}</p>}
                     <div className="form-row">
                         <label>Who do you want to split this expense with?</label>
                         <div className="members-options">
@@ -103,6 +122,7 @@ console.log(selectedMembers)
                             ))}
                         </div>
                     </div>
+                    {errors.selectedMembers && <p className='form-errors'>{errors.selectedMembers}</p>}
                     <div className="form-row">
                         <label>How do you want to split your expense?</label>
                         <div className="split-options">
@@ -133,13 +153,13 @@ console.log(selectedMembers)
                                             type="number"
                                             value={customShares[memberId] || ''}
                                             onChange={(e) => handleCustomShareChange(memberId, e.target.value)}
-                                            required
                                         />
                                     </div>
                                 );
                             })}
                         </div>
                     )}
+                    {errors.splitMethod && <p className='form-errors'>{errors.splitMethod}</p>}
                     <button className="submit-btn" type="submit">Add Expense</button>
                 </form>
             </div>

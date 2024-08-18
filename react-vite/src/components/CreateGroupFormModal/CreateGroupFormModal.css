@@ -15,8 +15,8 @@
   background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
-  width: 100%;
-  max-width: 500px;
+  width: 600px;
+  max-width: 90%;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: relative;
   font-family: Arial, Helvetica, sans-serif;
@@ -43,9 +43,11 @@
 }
 
 .form-label {
-  margin-bottom: 15px;
-  color: #333333;
+  margin-bottom: 5px;
+  color: #555;
   font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 600;
 }
 
 .form-input,
@@ -59,12 +61,12 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.friend-selection {
-  margin-top: 20px;
-}
+/* .friend-selection {
+  margin-top: 5px;
+} */
 
 .selection-heading {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   font-size: 18px;
   color: #333333;
 }
@@ -85,9 +87,18 @@
   transition: background-color 0.3s ease;
 }
 
+.friend-option:hover {
+  background-color: #c3c0c08f;
+  transform: scale(1.05);
+}
+
 .friend-option.selected {
-  background-color: #007bff;
+  background-color: #f0ad4e;
   color: white;
+}
+
+.friend-option.selected:hover {
+  background-color: #ec971f;
 }
 
 .friend-option img {
@@ -100,7 +111,7 @@
 .submit-button {
   margin-top: 20px;
   padding: 10px;
-  background-color: #4CAF50;
+  background-color: #1abc9c;
   color: white;
   border: none;
   border-radius: 4px;
@@ -110,5 +121,19 @@
 }
 
 .submit-button:hover {
-  background-color: #45a049;
+  background-color: #16a085;
+  transform: scale(1.05);
+  color: white;
+}
+
+.form-errors {
+  color: red;
+  font-size: 14px;
+}
+
+.create-group-modal {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
 }

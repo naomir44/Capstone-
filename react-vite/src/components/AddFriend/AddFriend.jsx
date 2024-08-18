@@ -7,22 +7,32 @@ import { useModal } from "../../context/Modal";
 const AddFriend = () => {
   const dispatch = useDispatch()
   const [email, setEmail] = useState('')
-  const [error, setError] = useState('')
+  const [errors, setErrors] = useState('')
   const user = useSelector(state => state.session.user)
   const { closeModal } = useModal();
 
+  const friendExists = user.friendships.some(friendship => friendship.friend_email === email);
+  const friendRequestSent = user.friendships.some(friendship => friendship.status === 'pending');
+
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    const validationErrors = {}
+
+    if (email.trim().length === 0) validationErrors.email = 'Provide a valid email';
+    if (friendExists) validationErrors.email = 'You are already friends with this user';
+    if (friendRequestSent) validationErrors.email = 'You have already sent a friend request to this user';
+
+    if (Object.values(validationErrors).length > 0) {
+      setErrors(validationErrors)
+  } else {
     const response = await dispatch(addFriendThunk(email))
-    if (response.error) {
-      setError(response.error)
-    } else {
+    if (response) {
       setEmail('')
-      setError('')
       closeModal()
       await dispatch(fetchFriendRequests(user.id))
       await dispatch(fetchFriends(user.id))
     }
+  }
   };
   return (
     <div className="modal-overlay">
@@ -30,7 +40,7 @@ const AddFriend = () => {
         <button className="modal-close-btn" onClick={closeModal}>&times;</button>
         <form onSubmit={handleSubmit} className="add-friend-section">
           <label className="add-friend-label">
-            Friend&apos;s Email:
+            User&apos;s Email:
             <input
               type="email"
               value={email}
@@ -39,8 +49,8 @@ const AddFriend = () => {
               placeholder="Enter email address"
             />
           </label>
+          {errors.email && <p className="form-errors">{errors.email}</p>}
           <button type="submit" className="add-friend-button">Add Friend</button>
-          {error && <p className="add-friend-error">{error}</p>}
         </form>
       </div>
     </div>

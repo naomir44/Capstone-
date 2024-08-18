@@ -28,8 +28,9 @@
 .signup-form-label {
   display: block;
   margin-bottom: 10px;
-  color: #333;
+  color: #555;
   font-size: 14px;
+  font-weight: 600;
 }
 
 .signup-form-input {
@@ -44,7 +45,7 @@
 }
 
 .signup-form-input:focus {
-  border-color: #007bff;
+  border-color: #333;
   outline: none;
 }
 
