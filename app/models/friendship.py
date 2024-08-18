@@ -22,5 +22,6 @@ class Friendship(db.Model):
             'status': self.status,
             'friend_name': self.friend.name,
             'sender_name': self.user.name,
-            'profile_picture': self.friend.profile_picture
+            'profile_picture': self.friend.profile_picture,
+            'sender_profile_pic': self.user.profile_picture
         }
