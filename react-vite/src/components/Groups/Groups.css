@@ -12,14 +12,14 @@
 margin-left: auto;
 }
 
-.open-create-group-modal-button {
+.open-create-group-modal-button-div>.open-create-group-modal-button {
+  margin-top: 0px;
   padding: 5px 5px;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  border-radius: 8px;
-  border: none;
-  color: #555555;
-  font-family: 'Arial', sans-serif;
   font-size: 12px;
+  color: white;
+  background-color: #1abc9c;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }

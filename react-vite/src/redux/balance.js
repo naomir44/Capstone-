@@ -25,7 +25,7 @@ export const fetchBalance = () => async (dispatch) => {
 };
 
 export const fetchPayExpense = (expense, expense_id) => async (dispatch) => {
-  const response = await fetch(`/api/expenses/pay/${expense_id}`, {
+  const response = await fetch(`/api/expenses/pay/${expense_id}/`, {
     method: 'PUT',
     headers: {
         'Content-Type': 'application/json',

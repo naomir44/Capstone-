@@ -1,0 +1,47 @@
+.landing-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #2c3e50;
+  padding: 20px;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+}
+
+.landing-page-container h1 {
+  font-size: 48px;
+  font-weight: bold;
+  color: #1abc9c;
+  margin-bottom: 20px;
+}
+
+.landing-page-container h2 {
+  font-size: 24px;
+  font-weight: 400;
+  color: #34495e;
+  line-height: 1.5;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cta-button {
+  margin-top: 30px;
+  padding: 15px 30px;
+  font-size: 18px;
+  color: white;
+  background-color: #1abc9c;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.cta-button:hover {
+  background-color: #16a085;
+  transform: scale(1.05);
+  color: white;
+}
+
+.cta-button:active {
+  transform: scale(1);
+}

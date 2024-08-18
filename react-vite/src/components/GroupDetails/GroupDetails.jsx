@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchGroupDeets } from "../../redux/groups";
 import AddExpenseFormModal from "../AddExpenseFormModal/AddExpenseFormModal";
 import UpdateGroupFormModal from "../UpdateGroupFormModal/UpdateGroupFormModal";
 import DeleteGroupModal from "../DeleteGroupModal/DeleteGroupModal";
-import OpenModalButton from '../OpenModalButton'
+import OpenModalButton from '../OpenModalButton';
 import './GroupDetails.css';
 
 const GroupDetails = () => {
@@ -13,10 +13,26 @@ const GroupDetails = () => {
     const dispatch = useDispatch();
     const group = useSelector(state => state.groups[groupId]);
     const [showEditOptions, setShowEditOptions] = useState(false);
+    const dropdownRef = useRef(null);
 
     useEffect(() => {
         dispatch(fetchGroupDeets(groupId));
     }, [dispatch, groupId]);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setTimeout(() => {
+                    setShowEditOptions(false);
+                }, 100);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [dropdownRef]);
 
     if (!group) {
         return <h1>Loading...</h1>;
@@ -27,6 +43,7 @@ const GroupDetails = () => {
     };
 
     return (
+        <>
         <div className="group-deets-container">
             <div className="group-deets-header">
                 <div className="group-picture-container">
@@ -35,30 +52,26 @@ const GroupDetails = () => {
                 <div className="group-info">
                     <div className="group-name-edit-container">
                         <h2 className="group-name-in-group-deets">{group.name}</h2>
-                        <div><OpenModalButton
-                            modalComponent={<AddExpenseFormModal groupId={group.id} />}
-                            buttonText={'Add an expense'}
-                            /></div>
-                        <div className={`group-actions-dropdown ${showEditOptions ? 'show' : ''}`}>
+                        <div ref={dropdownRef} className={`group-actions-dropdown ${showEditOptions ? 'show' : ''}`}>
                             <button onClick={toggleEditOptions} className="dropdown-btn">
                                 Edit
                             </button>
                             {showEditOptions && (
                                 <div className="dropdown-content">
-                                    {console.log("Dropdown is rendered")}
                                     <OpenModalButton
-                                    buttonText="Update"
-                                    modalComponent={<UpdateGroupFormModal groupId={groupId}/>}
+                                        buttonText="Update Group"
+                                        modalComponent={<UpdateGroupFormModal groupId={groupId} />}
                                     />
-                                   <OpenModalButton
-                                   buttonText='Delete'
-                                   modalComponent={<DeleteGroupModal groupId={groupId}/>}
-                                   />
+                                    <OpenModalButton
+                                        buttonText='Delete Group'
+                                        modalComponent={<DeleteGroupModal groupId={groupId} />}
+                                    />
                                 </div>
                             )}
                         </div>
                     </div>
                     <div className="group-members-overview">
+                        <div className="members-header">Members</div>
                         <div className="group-member-avatars">
                             {group.members?.slice(0, 5).map(member => (
                                 <img
@@ -80,9 +93,18 @@ const GroupDetails = () => {
                     </div>
                 </div>
             </div>
+            </div>
 
             <div className="payments-feed">
-                <h3>Payments Feed</h3>
+                <div className="feed-header">
+                    <h3>Payments Feed</h3>
+                   <div className="open-add-expense-button-div">
+                   <OpenModalButton
+                        modalComponent={<AddExpenseFormModal groupId={group.id} />}
+                        buttonText={'Add an expense'}
+                    />
+                   </div>
+                </div>
                 {group.expenses.length > 0 ? (
                     group.expenses.map(expense => (
                         <div key={expense.id} className="payment-item">
@@ -90,9 +112,9 @@ const GroupDetails = () => {
                             <div>Total: {expense.amount}</div>
                             {expense.payments.map(payment => (
                                 payment.status === 'paid' && (
-                               <div key={payment.id}>
-                                {payment.payee} paid {payment.payer} ${payment.amount.toFixed(2)}
-                               </div>
+                                    <div key={payment.id}>
+                                        {payment.payee} paid {payment.payer} ${payment.amount.toFixed(2)}
+                                    </div>
                                 )
                             ))}
                         </div>
@@ -101,10 +123,7 @@ const GroupDetails = () => {
                     <p>No payments made yet.</p>
                 )}
             </div>
-
-            {/* <button onClick={handleAddExpenseClick}>Add Expense</button>
-            <AddExpenseFormModal showModal={showAddExpenseModal} setShowModal={setShowAddExpenseModal} groupId={groupId} /> */}
-        </div>
+            </>
     );
 };
 

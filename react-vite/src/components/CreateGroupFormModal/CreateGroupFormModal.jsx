@@ -15,10 +15,14 @@ const CreateGroupFormModal = () => {
     const [description, setDescription] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
+    // const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // const validationErrors = {}
+
+
         const newGroup = {
             name,
             description,
@@ -92,20 +96,21 @@ const CreateGroupFormModal = () => {
               </label>
               <div className="friend-selection">
                 <h3 className="selection-heading">Select Friends to Add:</h3>
-                {acceptedFriends.map(friend => {
-                  const friendId = friend.user_id === currentUser.id ? friend.friend_id : friend.user_id;
-                  return (
-                    <div key={friend.id} className="select-friend">
-                      <input
-                        type="checkbox"
-                        checked={selectedFriends.includes(friendId)}
-                        onChange={() => handleFriendSelection(friendId)}
-                        className="checkbox"
-                      />
-                      <label className="friend-name">{getFriendName(friend)}</label>
-                    </div>
-                  );
-                })}
+                <div className="friends-options">
+                  {acceptedFriends.map(friend => {
+                    const friendId = friend.user_id === currentUser.id ? friend.friend_id : friend.user_id;
+                    return (
+                      <div
+                        key={friend.id}
+                        className={`friend-option ${selectedFriends.includes(friendId) ? 'selected' : ''}`}
+                        onClick={() => handleFriendSelection(friendId)}
+                      >
+                        <img src={friend.profile_picture || '/default-profile.png'} alt={getFriendName(friend)} />
+                        <span>{getFriendName(friend)}</span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
               <button type="submit" className="submit-button">Create Group</button>
             </form>

@@ -41,60 +41,66 @@ function SignupFormModal() {
   };
 
   return (
-    <>
-      <h1>Sign Up</h1>
-      {errors.server && <p>{errors.server}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
+    <div className="signup-form-modal-container">
+      <h1 className="signup-form-modal-heading">Sign Up</h1>
+      {errors.server && <p className="signup-form-modal-error">{errors.server}</p>}
+      <form onSubmit={handleSubmit} className="signup-form-modal-form">
+        <label className="signup-form-modal-label">
           Email
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="signup-form-modal-input"
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
-        <label>
+        {errors.email && <p className="signup-form-modal-error">{errors.email}</p>}
+        <label className="signup-form-modal-label">
           Name
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            className="signup-form-modal-input"
           />
         </label>
-        {errors.name && <p>{errors.name}</p>}
-        <label>
+        {errors.name && <p className="signup-form-modal-error">{errors.name}</p>}
+        <label className="signup-form-modal-label">
           Password
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="signup-form-modal-input"
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
-        <label>
+        {errors.password && <p className="signup-form-modal-error">{errors.password}</p>}
+        <label className="signup-form-modal-label">
           Confirm Password
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            className="signup-form-modal-input"
           />
         </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <label>
+        {errors.confirmPassword && <p className="signup-form-modal-error">{errors.confirmPassword}</p>}
+        <label className="signup-form-modal-label">
           Profile Picture
-          <input type="text"
-          value={profilePicture}
-          onChange={(e) => setProfilePicture(e.target.value)}
+          <input
+            type="text"
+            value={profilePicture}
+            onChange={(e) => setProfilePicture(e.target.value)}
+            className="signup-form-modal-input"
           />
         </label>
-        <button type="submit">Sign Up</button>
+        <button type="submit" className="signup-form-modal-button">Sign Up</button>
       </form>
-    </>
+    </div>
   );
 }
 

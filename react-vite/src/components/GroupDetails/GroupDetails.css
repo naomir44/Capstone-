@@ -1,14 +1,12 @@
 .group-deets-container {
-  background-color: #ffffff;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  font-family: 'Inter', sans-serif;
-  color: #333333;
-  margin-left: 20px;
+  font-family: 'Arial', sans-serif;
+  color: #2c3e50;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  background-color: #f0f4f8;
+  margin-left: 100px;
+  margin-bottom: 70px;
 }
 
 .group-deets-header {
@@ -17,93 +15,96 @@
   gap: 20px;
 }
 
-/* Group picture styling */
 .group-picture-container {
   flex-shrink: 0;
 }
 
 .group-picture {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #e0e0e0;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 3px solid #ecf0f1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-/* Group information styling */
 .group-info {
   flex: 1;
 }
 
-/* Container for group name and edit dropdown */
 .group-name-edit-container {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  gap: 620px;
 }
 
 .group-name-in-group-deets {
   font-size: 24px;
   font-weight: 700;
-  color: #333333;
+  color: #34495e;
 }
 
 .group-actions-dropdown {
   position: relative;
   display: inline-block;
 }
+
 .group-actions-dropdown.show .dropdown-content {
   display: block;
 }
 
 .dropdown-btn {
-  background-color: #007bff;
+  background-color: #1abc9c;
   color: white;
-  padding: 8px 12px;
-  font-size: 14px;
   border: none;
+  padding: 8px 14px;
+  font-size: 14px;
   cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .dropdown-btn:hover {
-  background-color: #0056b3;
+  background-color: #16a085;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  top: 100%;
+  right: 0%;
+  background-color: #ffffff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   z-index: 1;
-  border-radius: 4px;
+  border-radius: 8px;
   overflow: hidden;
+  min-width: 180px;
 }
 
 .dropdown-content button {
   width: 100%;
   background-color: transparent;
-  color: #333;
-  padding: 12px 16px;
-  text-align: left;
+  color: #34495e;
+  padding: 10px 16px;
   border: none;
   cursor: pointer;
   font-size: 14px;
+  text-align: left;
   transition: background-color 0.3s ease;
+  margin-top: 0;
 }
 
 .dropdown-content button:hover {
-  background-color: #f1f1f1;
+  background-color: #ecf0f1;
 }
 
-.group-members-overview {
-  margin-top: 10px;
+.members-header {
+  padding-bottom: 10px;
+  color: #7f8c8d;
 }
 
-/* Group members avatars */
 .group-member-avatars {
   display: flex;
   align-items: center;
@@ -116,11 +117,11 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #ffffff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .more-members {
-  background-color: #e0e0e0;
+  background-color: #ecf0f1;
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -128,64 +129,61 @@
   align-items: center;
   justify-content: center;
   font-size: 12px;
-  color: #555555;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  color: #7f8c8d;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-/* Group members names */
 .group-member-names {
   margin-top: 10px;
   font-size: 14px;
-  color: #666666;
+  color: #7f8c8d;
 }
 
-/* Expenses section styling */
 .expenses-section-group-deets {
   margin-top: 20px;
 }
 
-/* Individual expense item */
 .expense-item-in-group-deets {
-  background-color: #f9f9f9;
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   margin-bottom: 20px;
 }
 
-/* Expense details section */
 .expense-details-in-group-deets {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 16px;
-  color: #555555;
+  color: #34495e;
 }
 
 .expense-details-in-group-deets span {
   margin-right: 10px;
 }
+
 .payments-in-group-deets {
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #ecf0f1;
 }
 
 .payments-in-group-deets h4 {
   font-size: 18px;
   font-weight: 600;
-  color: #333333;
+  color: #2c3e50;
   margin-bottom: 10px;
 }
 
-/* Individual payment item */
 .payment-item {
-  background-color: #f1f1f1;
+  background-color: white;
   padding: 12px;
   border-radius: 8px;
   margin-bottom: 10px;
+  margin-right: 50px;
   font-size: 14px;
-  color: #555555;
+  color: #7f8c8d;
 }
 
 .payment-item span {
@@ -195,4 +193,52 @@
 
 .payment-item span:last-child {
   margin-bottom: 0;
+}
+
+.feed-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.feed-header h3 {
+  margin: 0;
+  font-size: 24px;
+  color: #2c3e50;
+}
+
+.feed-header button {
+  margin-left: 20px;
+  padding: 8px 16px;
+  background-color: #1abc9c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feed-header button:hover {
+  background-color: #16a085;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.payments-feed {
+  margin-left: 80px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.open-add-expense-button-div>.open-add-expense-button {
+  margin-left: 20px;
+  padding: 8px 16px;
+  background-color: #1abc9c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 0;
 }

@@ -14,7 +14,7 @@ function OpenModalButton({
     if (typeof onButtonClick === "function") onButtonClick();
   };
 
-  return <button className='open-create-group-modal-button open-add-friend-button' onClick={onClick}>{buttonText}</button>;
+  return <button className='open-create-group-modal-button open-add-friend-button cta-button open-add-expense-button expense-edit-button' onClick={onClick}>{buttonText}</button>;
 }
 
 export default OpenModalButton;

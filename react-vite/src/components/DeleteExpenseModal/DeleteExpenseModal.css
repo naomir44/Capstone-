@@ -1,0 +1,67 @@
+.delete-expense-modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.delete-expense-modal-content {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: relative;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.confirm-expense-deletion-btn {
+  font-size: 24px;
+  color: #d9534f;
+  margin-bottom: 15px;
+}
+
+.confirm-expense-deletion-question {
+  font-size: 16px;
+  color: #555555;
+  margin-bottom: 20px;
+}
+
+.yes-delete-expense-btn {
+  padding: 10px 20px;
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.yes-delete-expense-btn:hover {
+  background-color: #c9302c;
+}
+
+.no-dont-delete-expense {
+  padding: 10px 20px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 16px;
+}
+
+.no-dont-delete-expense:hover {
+  background-color: #5a6268;
+}
