@@ -136,7 +136,9 @@ const GroupDetails = () => {
                                 <span className="payment-payer-name"> {expense.payer}</span>
                                 </div>
                                 </div>
-                                <div className="payment-item-bottom">Total: ${expense.amount}
+                                <div className="payment-item-bottom">
+                                <div className="payment-total">Total: ${expense.amount}</div>
+                                <div className="payment-bottom-payments">
                                 {expense.payments.map(payment => (
                                     payment.status === 'paid' && (
                                         <div className="someone-made-payment" key={payment.id}>
@@ -144,6 +146,7 @@ const GroupDetails = () => {
                                         </div>
                                     )
                                 ))}
+                                </div>
                                 </div>
                             </div>
                         ))
