@@ -6,13 +6,17 @@ def seed_users():
     Demo = User(
         name='Demo', email='demo@aa.io', password='password', profile_picture='https://pyschguacbucket.s3.us-west-1.amazonaws.com/profile-pic-3.jpeg')
     Marnie = User(
-        name='marnie', email='marnie@aa.io', password='password',profile_picture='https://pyschguacbucket.s3.us-west-1.amazonaws.com/profile-pic-2.jpeg' )
+        name='Marnie', email='marnie@aa.io', password='password',profile_picture='https://pyschguacbucket.s3.us-west-1.amazonaws.com/profile-pic-2.jpeg' )
     Bobbie = User(
-        name='bobbie', email='bobbie@aa.io', password='password',profile_picture='https://pyschguacbucket.s3.us-west-1.amazonaws.com/profile-pic-4.png')
+        name='Bobbie', email='bobbie@aa.io', password='password',profile_picture='https://pyschguacbucket.s3.us-west-1.amazonaws.com/profile-pic-4.png')
     Keri = User(
         name='Keri', email='keri@aa.io', password='password',profile_picture='https://pyschguacbucket.s3.us-west-1.amazonaws.com/profile-pic.jpeg')
     Jake = User(
         name='Jake', email='jake@aa.io', password='password',profile_picture='https://pyschguacbucket.s3.us-west-1.amazonaws.com/profile-pic-5.jpeg')
+    Josh = User(
+        name='Josh', email='josh@aa.io', password='password',profile_picture='https://pyschguacbucket.s3.us-west-1.amazonaws.com/josh-profile-pic.jpeg')
+    Laura = User(
+        name='Laura', email='laura@aa.io', password='password',profile_picture='https://pyschguacbucket.s3.us-west-1.amazonaws.com/laura-pro-pic.jpeg')
 
 
     db.session.add(Demo)
@@ -20,6 +24,8 @@ def seed_users():
     db.session.add(Bobbie)
     db.session.add(Keri)
     db.session.add(Jake)
+    db.session.add(Josh)
+    db.session.add(Laura)
     db.session.commit()
 
 
