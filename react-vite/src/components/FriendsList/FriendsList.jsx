@@ -6,11 +6,14 @@ import { FaUserFriends } from "react-icons/fa";
 import { TiDelete } from "react-icons/ti";
 import AddFriend from '../AddFriend/AddFriend';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
+import { useParams } from 'react-router-dom';
+import { fetchGroupDeets } from '../../redux/groups';
 
 const FriendsList = () => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.session.user);
     const friends = useSelector(state => state.friends.list);
+    const { groupId } = useParams()
 
     const requestPending = (friend) => {
         const friendship = friend.friendships?.find(f => f.friend_id === user?.id || f.user_id === user?.id);
@@ -21,8 +24,11 @@ const FriendsList = () => {
         dispatch(fetchFriends());
     }, [dispatch]);
 
-    const handleDelete = (friendId) => {
-        dispatch(deleteFriendThunk(friendId));
+    const handleDelete = async (friendId) => {
+      await dispatch(deleteFriendThunk(friendId));
+      if (groupId) {
+        await dispatch(fetchGroupDeets(groupId))
+      }
     };
 
     return (

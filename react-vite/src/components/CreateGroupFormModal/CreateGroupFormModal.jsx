@@ -8,7 +8,8 @@ import { useModal } from '../../context/Modal';
 const CreateGroupFormModal = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const friends = useSelector(state => state.session.user.friendships)
+    const user = useSelector(state => state.session.user);
+    const friends = useSelector(state => state.session.user.friendships);
     const currentUser = useSelector(state => state.session.user);
     const acceptedFriends = friends.filter(friend => friend.status === "accepted");
     const [name, setName] = useState('');
@@ -130,7 +131,7 @@ const CreateGroupFormModal = () => {
                         className={`friend-option ${selectedFriends.includes(friendId) ? 'selected' : ''}`}
                         onClick={() => handleFriendSelection(friendId)}
                       >
-                        <img src={friend.profile_picture || '/default-profile.png'} alt={getFriendName(friend)} />
+                        <img src={friend.friend_id !== user.id ? (friend.profile_picture || '/default-profile.png') : (friend.sender_profile_pic || '/default-profile.png')} alt={getFriendName(friend)} />
                         <span>{getFriendName(friend)}</span>
                       </div>
                     );

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateGroupThunk } from '../../redux/groups';
 import './UpdateGroupFormModal.css';
 import { useModal } from '../../context/Modal';
+import { fetchFriends } from '../../redux/friends';
 
 const UpdateGroupFormModal = ({ groupId }) => {
     const dispatch = useDispatch();
@@ -17,6 +18,10 @@ const UpdateGroupFormModal = ({ groupId }) => {
     const [imageUrl, setImageUrl] = useState('');
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal()
+
+    useEffect(() => {
+        dispatch(fetchFriends())
+    },[dispatch])
 
     useEffect(() => {
         if (group) {
@@ -124,7 +129,7 @@ const UpdateGroupFormModal = ({ groupId }) => {
                                             className={`update-group-modal-friend-option ${selectedFriends.includes(friendId) ? 'selected' : ''}`}
                                             onClick={() => handleFriendSelection(friendId)}
                                         >
-                                            <img src={friend.profile_picture || '/default-profile.png'} alt={getFriendName(friend)} />
+                                            <img src={friend.friend_id !== user.id ? (friend.profile_picture || '/default-profile.png') : (friend.sender_profile_pic || '/default-profile.png')} alt={getFriendName(friend)} />
                                             <span>{getFriendName(friend)}</span>
                                         </div>
                                     );
@@ -153,7 +158,7 @@ const UpdateGroupFormModal = ({ groupId }) => {
                                                 className={`update-group-modal-friend-option ${selectedFriends.includes(friendId) ? 'selected' : ''}`}
                                                 onClick={() => handleFriendSelection(friendId)}
                                             >
-                                                <img src={friend.profile_picture || '/default-profile.png'} alt={getFriendName(friend)} />
+                                                <img src={friend.friend_id !== user.id ? (friend.profile_picture || '/default-profile.png') : (friend.sender_profile_pic || '/default-profile.png')} alt={getFriendName(friend)} />
                                                 <span>{getFriendName(friend)}</span>
                                             </div>
                                         );
