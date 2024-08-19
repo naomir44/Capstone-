@@ -14,7 +14,8 @@
 
 .navigation-button-list>.navigation-button-login {
   margin-top: 0;
-  padding: 10px 12px;
+  padding: 10px 15px;
+  font-size: 16px;
 }
 
 .navigation-button-item {

@@ -30,8 +30,11 @@ const Groups = () => {
         /></div>
         </div>
       {userGroups.map(group => (
+        <div className='group-list' key={group.id}>
+        <img className='friend-profile-picture' src={group.image_url} alt="" />
         <div className='group-name' key={group.id}>
-          <NavLink to={`/groups/${group.id}`}>{group.name}</NavLink>
+          <NavLink className='group-name-link' to={`/groups/${group.id}`}>{group.name}</NavLink>
+        </div>
         </div>
       ))}
     </>

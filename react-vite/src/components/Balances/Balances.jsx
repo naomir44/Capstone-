@@ -48,20 +48,7 @@ const Balances = ({ isSidebarOpen }) => {
 
   return (
     <div className={`balances-container ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
-     {/* <div className='header-balance-container'>
-     <h1 className='expenses-header'>{user.name}&apos;s Expenses</h1>
-      <div className="balances-card">
-        <h2>My Balance</h2>
-        {balance && (
-          <>
-            <p>Total Paid: ${balance.total_paid.toFixed(2)}</p>
-            <p>Total Owed: ${balance.total_owed.toFixed(2)}</p>
-          </>
-        )}
-      </div>
-     </div> */}
-
-<h1 className='expenses-header'>Expenses</h1>
+<h1 className='expenses-header'>{user.name}&apos;s Expenses</h1>
       <div className="expenses-section">
         <h3>Expenses You Owe</h3>
         {balance?.expenses_you_owe.length > 0 ? (

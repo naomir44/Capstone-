@@ -44,8 +44,8 @@
 
 .form-label {
   margin-bottom: 5px;
-  color: #555;
-  font-size: 16px;
+  color: #007aff;
+  font-size: 14px;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 600;
 }
@@ -67,8 +67,8 @@
 
 .selection-heading {
   margin-bottom: 5px;
-  font-size: 18px;
-  color: #333333;
+  font-size: 14px;
+  color: #007aff;
 }
 
 .friends-options {
@@ -134,6 +134,6 @@
 .create-group-modal {
   text-align: center;
   font-size: 24px;
-  color: #333;
+  color: #007aff;
   margin-bottom: 20px;
 }

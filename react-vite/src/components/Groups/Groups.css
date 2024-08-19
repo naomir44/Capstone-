@@ -1,5 +1,5 @@
 .groups-header {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: normal;
   color: #555555;
   display: flex;
@@ -27,4 +27,16 @@ margin-left: auto;
 
 .group-name {
   width: fit-content;
+  font-size: 16px;
+}
+
+.group-name>.group-name-link {
+  font-size: 16px;
+}
+
+.group-list {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 5px;
 }

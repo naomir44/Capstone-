@@ -39,7 +39,7 @@
 
 .update-expense-modal-content h2 {
   margin-bottom: 20px;
-  color: #333333;
+  color: #007aff;
   text-align: center;
 }
 
@@ -51,7 +51,8 @@
 
 .form-row label {
   margin-bottom: 5px;
-  color: #555555;
+  color: #007aff;
+  font-size: 14px;
 }
 
 .form-row input[type="text"],
