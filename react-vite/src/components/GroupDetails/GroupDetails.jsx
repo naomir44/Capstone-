@@ -67,10 +67,12 @@ const GroupDetails = () => {
                                     <OpenModalButton
                                         buttonText="Update Group"
                                         modalComponent={<UpdateGroupFormModal groupId={groupId} />}
+                                        onButtonClick={toggleEditOptions}
                                     />
                                     <OpenModalButton
                                         buttonText='Delete Group'
                                         modalComponent={<DeleteGroupModal groupId={groupId} />}
+                                        onButtonClick={toggleEditOptions}
                                     />
                                 </div>
                                 ) :
@@ -78,6 +80,7 @@ const GroupDetails = () => {
                                     <OpenModalButton
                                         buttonText="Select Members"
                                         modalComponent={<UpdateGroupFormModal groupId={groupId} />}
+                                        onButtonClick={toggleEditOptions}
                                     />
                                 </div>
                             )}

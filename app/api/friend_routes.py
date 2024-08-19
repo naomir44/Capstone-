@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, abort
 from flask_login import login_required, current_user
-from app.models import  User, Friendship, db
+from app.models import  User, Friendship, Group, Member, db
 
 friendship_bp = Blueprint('friendships', __name__)
 
@@ -75,6 +75,19 @@ def get_friend_requests():
 @friendship_bp.route('/delete/<int:friend_id>/', methods=["DELETE"])
 @login_required
 def delete_friend(friend_id):
+    # friendship = Friendship.query.filter(
+    #     (Friendship.user_id == current_user.id) & (Friendship.friend_id == friend_id) |
+    #     (Friendship.user_id == friend_id) & (Friendship.friend_id == current_user.id)
+    # ).first()
+
+    # if not friendship:
+    #     return jsonify({"error": "Friendship not found"}), 404
+
+    # db.session.delete(friendship)
+    # db.session.commit()
+
+    # return jsonify({"message": "Friendship deleted"}), 200
+
     friendship = Friendship.query.filter(
         (Friendship.user_id == current_user.id) & (Friendship.friend_id == friend_id) |
         (Friendship.user_id == friend_id) & (Friendship.friend_id == current_user.id)
@@ -83,7 +96,18 @@ def delete_friend(friend_id):
     if not friendship:
         return jsonify({"error": "Friendship not found"}), 404
 
+    # Find and remove the friend from all groups where both are members
+    groups = Group.query.join(Member, Group.id == Member.group_id).filter(
+        (Member.user_id == current_user.id) | (Member.user_id == friend_id)
+    ).all()
+
+    for group in groups:
+        member_to_remove = Member.query.filter_by(group_id=group.id, user_id=friend_id).first()
+        if member_to_remove:
+            db.session.delete(member_to_remove)
+
+    # Delete the friendship
     db.session.delete(friendship)
     db.session.commit()
 
-    return jsonify({"message": "Friendship deleted"}), 200
+    return jsonify({"message": "Friendship and group memberships deleted"}), 200

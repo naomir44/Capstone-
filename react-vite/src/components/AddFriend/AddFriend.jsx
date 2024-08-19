@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { addFriendThunk, fetchFriendRequests, fetchFriends } from "../../redux/friends";
 import './AddFriend.css';
 import { useModal } from "../../context/Modal";
+// import { useParams } from "react-router-dom";
+// import { fetchGroupDeets } from "../../redux/groups";
 
 const AddFriend = () => {
   const dispatch = useDispatch()
+  // const { groupId } = useParams()
   const [email, setEmail] = useState('')
   const [errors, setErrors] = useState('')
   const user = useSelector(state => state.session.user)
@@ -31,6 +34,9 @@ const AddFriend = () => {
       closeModal()
       await dispatch(fetchFriendRequests(user.id))
       await dispatch(fetchFriends(user.id))
+      // if (groupId) {
+      //   await dispatch(fetchGroupDeets(groupId))
+      // }
     }
   }
   };

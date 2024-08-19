@@ -17,7 +17,7 @@ const UpdateGroupFormModal = ({ groupId }) => {
     const [imageUrl, setImageUrl] = useState('');
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal()
-
+console.log(acceptedFriends)
     useEffect(() => {
         if (group) {
             setName(group.name || '');
@@ -124,7 +124,7 @@ const UpdateGroupFormModal = ({ groupId }) => {
                                             className={`update-group-modal-friend-option ${selectedFriends.includes(friendId) ? 'selected' : ''}`}
                                             onClick={() => handleFriendSelection(friendId)}
                                         >
-                                            <img src={friend.profile_picture || '/default-profile.png'} alt={getFriendName(friend)} />
+                                            <img src={friend.friend_id !== user.id ? (friend.profile_picture || '/default-profile.png') : (friend.sender_profile_pic || '/default-profile.png')} alt={getFriendName(friend)} />
                                             <span>{getFriendName(friend)}</span>
                                         </div>
                                     );
