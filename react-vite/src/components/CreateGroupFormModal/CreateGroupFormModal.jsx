@@ -22,19 +22,23 @@ const CreateGroupFormModal = () => {
         e.preventDefault();
         const validationErrors = {}
 
+        const groupPicToUpload = imageUrl.trim()
+        ? imageUrl.trim()
+        : 'https://pyschguacbucket.s3.us-west-1.amazonaws.com/default-group-pic.jpeg';
+
         if (name.trim().length === 0) validationErrors.name = 'Give your group a name';
         if (description.trim().length === 0) validationErrors.description = 'Provide a description for your group';
         if (selectedFriends.length === 0) validationErrors.selectedFriends = 'Select friends to be apart of your group';
 
-        const isValidUrl = (imageUrl) => {
-          try {
-            new URL(imageUrl);
-            return true;
-          } catch {
-            return false;
-          }
-        };
-        if (!imageUrl.trim() || !isValidUrl(imageUrl.trim())) validationErrors.imageUrl = 'Add a valid group image';
+        // const isValidUrl = (imageUrl) => {
+        //   try {
+        //     new URL(imageUrl);
+        //     return true;
+        //   } catch {
+        //     return false;
+        //   }
+        // };
+        // if (!imageUrl.trim() || !isValidUrl(imageUrl.trim())) validationErrors.imageUrl = 'Add a valid group image';
 
         if (Object.values(validationErrors).length > 0) {
           setErrors(validationErrors);
@@ -44,7 +48,7 @@ const CreateGroupFormModal = () => {
             name,
             description,
             members: selectedFriends,
-            image_url: imageUrl
+            image_url: groupPicToUpload
         }
         const response = await dispatch(createGroupThunk(newGroup));
         if (response) {

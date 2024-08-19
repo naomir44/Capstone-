@@ -24,16 +24,16 @@ function SignupFormModal() {
       });
     }
 
-    // const profilePicToUpload = profilePicture.trim()
-    //   ? profilePicture.trim()
-    //   : '../../../public/Default_pfp.jpg';
+    const profilePicToUpload = profilePicture.trim()
+      ? profilePicture.trim()
+      : 'https://pyschguacbucket.s3.us-west-1.amazonaws.com/Default_pfp.jpg';
 
     const serverResponse = await dispatch(
       thunkSignup({
         email,
         name,
         password,
-        profile_picture: profilePicture
+        profile_picture: profilePicToUpload
       })
     );
 
