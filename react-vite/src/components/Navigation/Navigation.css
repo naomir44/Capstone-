@@ -12,6 +12,11 @@
   align-items: center;
 }
 
+.navigation-button-list>.navigation-button-login {
+  margin-top: 0;
+  padding: 10px 12px;
+}
+
 .navigation-button-item {
   margin-left: 20px;
   padding: 10px 20px;

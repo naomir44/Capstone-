@@ -12,6 +12,7 @@ const GroupDetails = () => {
     let { groupId } = useParams();
     const dispatch = useDispatch();
     const group = useSelector(state => state.groups[groupId]);
+    const user = useSelector(state => state.session.user)
     const [showEditOptions, setShowEditOptions] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -61,7 +62,8 @@ const GroupDetails = () => {
                                 Edit
                             </button>
                             {showEditOptions && (
-                                <div className="dropdown-content">
+                                user.id === group.created_by ? (
+                                <div className="dropdown-content-in-group-details">
                                     <OpenModalButton
                                         buttonText="Update Group"
                                         modalComponent={<UpdateGroupFormModal groupId={groupId} />}
@@ -69,6 +71,13 @@ const GroupDetails = () => {
                                     <OpenModalButton
                                         buttonText='Delete Group'
                                         modalComponent={<DeleteGroupModal groupId={groupId} />}
+                                    />
+                                </div>
+                                ) :
+                                <div className="dropdown-content-in-group-details">
+                                    <OpenModalButton
+                                        buttonText="Select Members"
+                                        modalComponent={<UpdateGroupFormModal groupId={groupId} />}
                                     />
                                 </div>
                             )}
