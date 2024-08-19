@@ -60,9 +60,6 @@ def create_group():
 def update_group(group_id):
     group = Group.query.get_or_404(group_id)
 
-    if group.created_by != current_user.id:
-        abort(403, description="You are not authorized to update this group")
-
     data = request.get_json()
     group.name = data.get('name', group.name)
     group.description = data.get('description', group.description)

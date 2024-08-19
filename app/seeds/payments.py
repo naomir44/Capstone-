@@ -30,19 +30,11 @@ def seed_payments():
         amount=400.00,
         status='pending'
     )
-    payment5 = Payment(
-        expense_id=2,
-        payer_id=3,
-        payee_id=4,
-        amount=100.00,
-        status='pending'
-    )
 
     db.session.add(payment1)
     db.session.add(payment2)
     db.session.add(payment3)
     db.session.add(payment4)
-    db.session.add(payment5)
     db.session.commit()
 
 def undo_payments():

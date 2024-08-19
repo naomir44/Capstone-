@@ -7,6 +7,7 @@
   background-color: #f0f4f8;
   margin-left: 100px;
   margin-bottom: 20px;
+  height: fit-content;
 }
 
 .group-deets-header {
@@ -51,7 +52,7 @@
   display: inline-block;
 }
 
-.group-actions-dropdown.show .dropdown-content {
+.group-actions-dropdown.show .dropdown-content-in-group-details {
   display: block;
 }
 
@@ -71,17 +72,26 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.dropdown-content {
+.dropdown-content-in-group-details>.dropdown-content-group-details {
+  margin-top: 3px;
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  width: 110px;
+  display: block;
+  gap: 5px;
+}
+
+.dropdown-content-in-group-details {
   display: none;
   position: absolute;
   top: 100%;
-  right: 0%;
-  background-color: #ffffff;
+  left: 0%;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   z-index: 1;
   border-radius: 8px;
   overflow: hidden;
-  min-width: 180px;
+
 }
 
 .dropdown-content button {
@@ -98,7 +108,7 @@
 }
 
 .dropdown-content button:hover {
-  background-color: #ecf0f1;
+  background-color: #ec971f;
 }
 
 .members-header {

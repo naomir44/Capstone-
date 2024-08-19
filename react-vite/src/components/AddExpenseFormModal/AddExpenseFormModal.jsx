@@ -32,6 +32,16 @@ const AddExpenseFormModal = ({ groupId }) => {
         });
     };
 
+    const groupMembers = []
+    if (group.creator.name !== user.name) {
+        groupMembers.push(group.creator)
+    }
+    group.members.forEach(member => {
+        if (member.member.name !== user.name) {
+            groupMembers.push(member.member)
+        }
+    })
+
     const validateForm = () => {
         const validationErrors = {}
 
@@ -110,14 +120,14 @@ const AddExpenseFormModal = ({ groupId }) => {
                     <div className="form-row">
                         <label>Who do you want to split this expense with?</label>
                         <div className="members-options">
-                            {group?.members.map(member => (
+                            {groupMembers.map(member => (
                                 <div
                                     key={member.id}
-                                    className={`member-option ${selectedMembers.includes(member.user_id) ? 'selected' : ''}`}
-                                    onClick={() => handleMemberToggle(member.user_id)}
+                                    className={`member-option ${selectedMembers.includes(member.id) ? 'selected' : ''}`}
+                                    onClick={() => handleMemberToggle(member.id)}
                                 >
-                                    <img src={member.member.profile_picture} alt={member.member.name} />
-                                    <span>{member.member.name}</span>
+                                    <img src={member.profile_picture} alt={member.name} />
+                                    <span>{member.name}</span>
                                 </div>
                             ))}
                         </div>

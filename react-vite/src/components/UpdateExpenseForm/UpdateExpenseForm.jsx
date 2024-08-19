@@ -7,6 +7,7 @@ import './UpdateExpenseForm.css';
 const UpdateExpenseForm = ({ expense }) => {
     const dispatch = useDispatch();
     const group = useSelector(state => state.groups[expense.group_id]);
+    const user = useSelector(state => state.session.user)
     const [description, setDescription] = useState(expense.description);
     const [amount, setAmount] = useState(expense.amount);
     const [date, setDate] = useState(expense.date);
@@ -49,11 +50,21 @@ const UpdateExpenseForm = ({ expense }) => {
         });
     };
 
+    const groupMembers = []
+    if (group.creator.name !== user.name) {
+        groupMembers.push(group.creator)
+    }
+    group.members.forEach(member => {
+        if (member.member.name !== user.name) {
+            groupMembers.push(member.member)
+        }
+    })
+
     const validateForm = () => {
         const validationErrors = {}
 
         if (description.trim().length === 0) validationErrors.description = "Give this expense a description";
-        if (amount.trim().length === 0) validationErrors.amount = "Provide an amount for this expense";
+        if (!amount) validationErrors.amount = "Provide an amount for this expense";
         if (!date) validationErrors.date = "Tell members when this expense need to be paid";
         if (!splitMethod) validationErrors.splitMethod = "How do you want to split this expense";
         if (selectedMembers.length === 0) validationErrors.selectedMembers = "Select members to split this expense with";
@@ -118,14 +129,14 @@ const UpdateExpenseForm = ({ expense }) => {
                     <div className="form-row">
                         <label>Who do you want to split this expense with?</label>
                         <div className="members-options">
-                            {group?.members.map(member => (
+                        {groupMembers.map(member => (
                                 <div
                                     key={member.id}
-                                    className={`member-option ${selectedMembers.includes(member.user_id) ? 'selected' : ''}`}
-                                    onClick={() => handleMemberToggle(member.user_id)}
+                                    className={`member-option ${selectedMembers.includes(member.id) ? 'selected' : ''}`}
+                                    onClick={() => handleMemberToggle(member.id)}
                                 >
-                                    <img src={member.member.profile_picture} alt={member.member.name} />
-                                    <span>{member.member.name}</span>
+                                    <img src={member.profile_picture} alt={member.name} />
+                                    <span>{member.name}</span>
                                 </div>
                             ))}
                         </div>

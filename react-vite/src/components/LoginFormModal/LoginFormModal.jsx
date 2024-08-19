@@ -70,7 +70,7 @@ function LoginFormModal() {
           />
         </label>
         {errors.password && <p className="login-form-modal-error">{errors.password}</p>}
-        <button onClick={handleDemoLogin} className="demo-user-button">Demo User</button>
+        <button type="button" onClick={handleDemoLogin} className="demo-user-button">Demo User</button>
         <button type="submit" className="login-form-modal-button">Log In</button>
       </form>
     </div>

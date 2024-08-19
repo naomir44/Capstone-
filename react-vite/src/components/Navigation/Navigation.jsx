@@ -1,8 +1,8 @@
 import SideBar from "../SideBar";
 import "./Navigation.css";
-import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import { useSelector } from "react-redux";
+import OpenModalButton from "../OpenModalButton";
 
 function Navigation() {
   const user = useSelector(state => state.session.user);
@@ -10,17 +10,15 @@ function Navigation() {
   return (
     <div className="navigation-container">
       {user && <SideBar />}
-      <ul className="navigation-button-list">
+      <div className="navigation-button-list">
         {!user && (
-          <li className="navigation-button-item">
-            <OpenModalMenuItem
-              itemText="Log In"
+            <OpenModalButton
+              buttonText="Log In"
               modalComponent={<LoginFormModal />}
               className="navigation-button-login"
             />
-          </li>
         )}
-      </ul>
+      </div>
     </div>
   );
 }
