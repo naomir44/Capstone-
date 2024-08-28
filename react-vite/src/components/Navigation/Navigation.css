@@ -1,7 +1,7 @@
 .navigation-container {
   display: flex;
   justify-content: flex-end;
-  padding: 20px;
+  /* padding: 20px; */
 }
 
 .navigation-button-list {

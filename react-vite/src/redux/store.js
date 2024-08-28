@@ -10,6 +10,7 @@ import groupsReducer from "./groups";
 import friendsReducer from "./friends";
 import expensesReducer from "./expense";
 import balanceReducer from "./balance";
+import messagesReducer from "./message";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   friends: friendsReducer,
   expenses: expensesReducer,
   balances: balanceReducer,
+  messages: messagesReducer,
 });
 
 let enhancer;

@@ -7,6 +7,7 @@ import FriendsList from '../FriendsList/FriendsList';
 import AcceptFriend from '../AcceptFriend/AcceptFriend';
 import { IoHomeSharp } from "react-icons/io5";
 import { BsCreditCardFill } from "react-icons/bs";
+import { AiFillMessage } from "react-icons/ai";
 import './SideBar.css';
 
 const SideBar = ({ sidebarOpen }) => {
@@ -61,6 +62,9 @@ const SideBar = ({ sidebarOpen }) => {
          </div>
           <div className='balances-button'>
             <NavLink to={`/balances/${user?.id}/my-balance`}><BsCreditCardFill />Expenses</NavLink>
+          </div>
+          <div>
+            <NavLink to="/chat"><AiFillMessage />Chat</NavLink>
           </div>
           <div className='groups'>
             <Groups />

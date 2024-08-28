@@ -1,10 +1,11 @@
 import os
 from flask import Flask, render_template, request, session, redirect
+from flask_socketio import SocketIO, join_room, emit
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager
-from .models import db, User
+from .models import db, User, Message
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .api.friend_routes import friendship_bp
@@ -12,8 +13,11 @@ from .api.expense_routes import expense_bp
 from .seeds import seed_commands
 from .config import Config
 from .api.group_routes import group_bp
+from .api.message_routes import message_bp
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
+
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Setup login manager
 login = LoginManager(app)
@@ -34,6 +38,8 @@ app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(group_bp, url_prefix='/api/groups')
 app.register_blueprint(friendship_bp, url_prefix='/api/friendships')
 app.register_blueprint(expense_bp, url_prefix='/api/expenses')
+app.register_blueprint(message_bp, url_prefix='/api/messages')
+
 db.init_app(app)
 Migrate(app, db)
 
@@ -95,3 +101,40 @@ def react_root(path):
 @app.errorhandler(404)
 def not_found(e):
     return app.send_static_file('index.html')
+
+# WebSocket event handlers
+
+@socketio.on('message')
+def handle_message(msg):
+    print('Message received: ' + msg)
+    socketio.send('Message received: ' + msg)
+
+@socketio.on('join_private')
+def handle_join_private(data):
+    user_email = data['user_email']
+    recipient_email = data['recipient_email']
+
+    # Use a consistent room naming convention
+    room = f'private_{min(user_email, recipient_email)}_{max(user_email, recipient_email)}'
+    join_room(room)
+
+    emit('message', {'message': f'{user_email} has joined the room.'}, room=room)
+
+@socketio.on('send_private_message')
+def handle_private_message(data):
+    user_email = data['user_email']
+    recipient_email = data['recipient_email']
+    message_content = data['content']
+
+    # Save the message to the database
+    new_message = Message(
+        sender_email=user_email,
+        recipient_email=recipient_email,
+        content=message_content
+    )
+    db.session.add(new_message)
+    db.session.commit()
+
+    # Use the same room format to send the message
+    room = f'private_{min(user_email, recipient_email)}_{max(user_email, recipient_email)}'
+    socketio.emit('receive_private_message', new_message.to_dict(), room=room)
