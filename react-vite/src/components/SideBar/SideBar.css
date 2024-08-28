@@ -1,5 +1,5 @@
 .sidebar {
-  height: 100%;
+  height: 100vh;
   width: 240px;
   position: fixed;
   top: 0;
@@ -14,6 +14,11 @@
   flex-direction: column;
   gap: 30px;
   transition: transform 0.3s ease, width 0.3s ease;
+  overflow-y: auto;
+}
+
+.sidebar .profile-info {
+  margin-bottom: 20px;
 }
 
 .sidebar.closed {

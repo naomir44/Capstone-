@@ -8,3 +8,4 @@ from .member import Member
 from .image import Image
 from .friendship import Friendship
 from .payment import Payment
+from .message import Message

@@ -6,6 +6,7 @@ import LandingPage from '../components/LandingPage/LandingPage';
 import GroupDetails from '../components/GroupDetails/GroupDetails';
 import CreateGroupFormModal from '../components/CreateGroupFormModal/CreateGroupFormModal';
 import Balances from '../components/Balances/Balances';
+import Chat from '../components/Chat/Chat';
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: 'balances/:userId/my-balance',
         element: <Balances />
+      },
+      {
+        path: '/chat',
+        element: <Chat />
       }
     ],
   },
