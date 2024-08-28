@@ -14,7 +14,8 @@ function Chat() {
     const messages = useSelector(state => state.messages.list);
 
 useEffect(() => {
-  const socketInstance = io('http://localhost:5000');
+//   const socketInstance = io('http://localhost:5000');
+const socketInstance = io('https://fair-share-3ygy.onrender.com');
   setSocket(socketInstance);
 
   socketInstance.on('receive_private_message', (data) => {
