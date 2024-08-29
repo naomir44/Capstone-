@@ -21,5 +21,4 @@ COPY . .
 
 RUN flask db upgrade
 RUN flask seed all
-# CMD gunicorn app:app
-CMD ["python", "run.py"]
+CMD gunicorn app:app
