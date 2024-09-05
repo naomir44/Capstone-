@@ -1,3 +1,6 @@
+import { io } from 'socket.io-client';
+import { addNotification } from './notification';
+
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
 
@@ -31,12 +34,22 @@ export const thunkLogin = (credentials) => async dispatch => {
 
   if(response.ok) {
     const data = await response.json();
+
     dispatch(setUser(data));
+
+    const socket = io('https://fair-share-3ygy.onrender.com');
+    socket.emit('join', { room: data.email });
+    console.log(`Joining notification room: notification_${data.email}`);
+
+    socket.on('new_notification', (notificationData) => {
+      console.log('New notification received:', notificationData);
+      dispatch(addNotification(notificationData))
+    });
   } else if (response.status < 500) {
     const errorMessages = await response.json();
-    return errorMessages
+    return errorMessages;
   } else {
-    return { server: "Something went wrong. Please try again" }
+    return { server: "Something went wrong. Please try again" };
   }
 };
 
@@ -69,7 +82,7 @@ export const updateProfilePictureThunk = (newProfilePicture) => async (dispatch)
 
   if (response.ok) {
     const data = await response.json();
-    dispatch(setUser(data)); // Update the user in the Redux store
+    dispatch(setUser(data));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
     return errorMessages;

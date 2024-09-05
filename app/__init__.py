@@ -4,8 +4,9 @@ from flask_socketio import SocketIO, join_room, emit
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
-from flask_login import LoginManager
-from .models import db, User, Message
+from flask_login import LoginManager, current_user
+from .models import db, User, Message, Notification
+from datetime import datetime, timezone
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .api.friend_routes import friendship_bp
@@ -109,24 +110,29 @@ def handle_message(msg):
     print('Message received: ' + msg)
     socketio.send('Message received: ' + msg)
 
+@socketio.on('user_logged_in')
+def handle_user_logged_in(data):
+    user_email = data['email']
+    join_room(user_email)
+    print(f"{user_email} has joined their personal notification room.")
+
 @socketio.on('join_private')
 def handle_join_private(data):
     user_email = data['user_email']
     recipient_email = data['recipient_email']
 
-    # Use a consistent room naming convention
     room = f'private_{min(user_email, recipient_email)}_{max(user_email, recipient_email)}'
     join_room(room)
 
     emit('message', {'message': f'{user_email} has joined the room.'}, room=room)
 
+
 @socketio.on('send_private_message')
 def handle_private_message(data):
-    user_email = data['user_email']
+    user_email = data['user_email']  # sender
     recipient_email = data['recipient_email']
     message_content = data['content']
 
-    # Save the message to the database
     new_message = Message(
         sender_email=user_email,
         recipient_email=recipient_email,
@@ -135,6 +141,69 @@ def handle_private_message(data):
     db.session.add(new_message)
     db.session.commit()
 
-    # Use the same room format to send the message
     room = f'private_{min(user_email, recipient_email)}_{max(user_email, recipient_email)}'
     socketio.emit('receive_private_message', new_message.to_dict(), room=room)
+
+
+@socketio.on('join')
+def handle_join(data):
+    room = data['room']
+    if room:
+        notification_room = f'notification_{room}'
+        join_room(notification_room)
+        print(f'User joined notification room: {notification_room}')
+    else:
+        print(f'No room name received in join event. Data: {data}')
+
+
+@socketio.on('send_notification')
+def handle_send_notification(data):
+    recipient_email = data['recipient_email']
+    notification_message = data['message']
+    notification_from = data.get('notification_from')
+
+    if notification_from is None:
+        emit('error', {'error': 'Missing notification_from'})
+        return
+
+    recipient = User.query.filter_by(email=recipient_email).first()
+    if not recipient:
+        emit('error', {'error': 'Recipient not found'})
+        return
+
+    try:
+        new_notification = Notification(
+            user_id=recipient.id,
+            message=notification_message,
+            link=data.get('link', '#'),
+            is_read=False,
+            notification_from=notification_from
+        )
+        db.session.add(new_notification)
+        db.session.commit()
+        socketio.emit('new_notification', new_notification.to_dict(), room=f'notification_{recipient_email}')
+        print("Notification created successfully")
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error creating notification: {e}")
+
+
+@socketio.on('mark_notification_as_read')
+def handle_mark_notification_as_read(data):
+    friend_email = data.get('friend_email')
+    user = current_user
+
+    if not friend_email:
+        emit('error', {'error': 'Missing friend_email'})
+        return
+
+    notifications = Notification.query.filter_by(user_id=user.id, notification_from=friend_email, is_read=False).all()
+
+    for notification in notifications:
+        notification.is_read = True
+    db.session.commit()
+
+    updated_notifications = [notification.to_dict() for notification in notifications]
+    socketio.emit('mark_notifications_as_read', updated_notifications, room=user.email)
+
+    emit('message', {'message': f'Notifications marked as read for {friend_email}'}, room=user.email)

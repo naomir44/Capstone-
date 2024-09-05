@@ -77,6 +77,8 @@ class User(db.Model, UserMixin):
     )
     sent_messages = db.relationship('Message', foreign_keys='Message.sender_email', back_populates='sender')
     received_messages = db.relationship('Message', foreign_keys='Message.recipient_email', back_populates='recipient')
+    notifications = db.relationship('Notification', back_populates='user', cascade='all, delete-orphan')
+
 
     @property
     def password(self):
@@ -100,5 +102,6 @@ class User(db.Model, UserMixin):
             'friendships': [friendship.to_dict() for friendship in self.friendships],
             'expenses': [expense.to_dict() for expense in self.expenses],
             'sent_messages': [message.to_dict() for message in self.sent_messages],
-            'received_messages': [message.to_dict() for message in self.received_messages]
+            'received_messages': [message.to_dict() for message in self.received_messages],
+            'notifications': [notification.to_dict() for notification in self.notifications],
         }
