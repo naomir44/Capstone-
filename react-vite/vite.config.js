@@ -14,6 +14,10 @@ export default defineConfig({
     open: true,
     proxy: {
       "/api": "http://127.0.0.1:5000",
+      "/socket.io": {
+        target: "https://fair-share-3ygy.onrender.com",
+        ws: true,
+      },
     },
   },
 });

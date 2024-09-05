@@ -9,10 +9,6 @@ const AcceptFriend = () => {
   const friendRequests = useSelector(state => state.friends.requests);
   const user = useSelector(state => state.session.user)
 
-  // useEffect(() => {
-  //   dispatch(fetchFriendRequests(user.id));
-  // }, [dispatch]);
-
   useEffect(() => {
     if (user) {
         dispatch(fetchFriendRequests(user.id));
@@ -30,7 +26,7 @@ const handleAccept = (friendshipId) => {
     <div className="friend-requests-header"><FaUserPlus />Friend Requests</div>
     {friendRequests?.length > 0 ? (
         friendRequests?.map(request => (
-            <div key={request.id} className="friend-requests">
+            <div key={request.friendship_id || request.id} className="friend-requests">
               {request.user_id !== user.id &&
               <>
                 <span><img src={request.sender_profile_pic} alt="" className="friend-profile-picture"/></span>

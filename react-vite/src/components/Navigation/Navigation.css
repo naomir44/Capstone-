@@ -1,7 +1,6 @@
-.navigation-container {
+/* .navigation-container {
   display: flex;
   justify-content: flex-end;
-  /* padding: 20px; */
 }
 
 .navigation-button-list {
@@ -38,4 +37,4 @@
 
 .navigation-button-item:active {
   transform: scale(1);
-}
+} */

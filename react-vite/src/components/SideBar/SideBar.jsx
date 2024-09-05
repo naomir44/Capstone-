@@ -5,6 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import Groups from '../Groups/Groups';
 import FriendsList from '../FriendsList/FriendsList';
 import AcceptFriend from '../AcceptFriend/AcceptFriend';
+import Notifications from '../Notifications';
 import { IoHomeSharp } from "react-icons/io5";
 import { BsCreditCardFill } from "react-icons/bs";
 import { AiFillMessage } from "react-icons/ai";
@@ -64,7 +65,7 @@ const SideBar = ({ sidebarOpen }) => {
             <NavLink to={`/balances/${user?.id}/my-balance`}><BsCreditCardFill />Expenses</NavLink>
           </div>
           <div>
-            <NavLink to="/chat"><AiFillMessage />Chat</NavLink>
+            <NavLink to="/chat"><AiFillMessage />Chat <Notifications /></NavLink>
           </div>
           <div className='groups'>
             <Groups />

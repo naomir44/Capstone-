@@ -7,6 +7,7 @@ import GroupDetails from '../components/GroupDetails/GroupDetails';
 import CreateGroupFormModal from '../components/CreateGroupFormModal/CreateGroupFormModal';
 import Balances from '../components/Balances/Balances';
 import Chat from '../components/Chat/Chat';
+import Notification from '../components/Notifications';
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
       {
         path: '/chat',
         element: <Chat />
+      },
+      {
+        path: '/api/messages/notifications',
+        element: <Notification />
       }
     ],
   },

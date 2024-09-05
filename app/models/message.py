@@ -9,7 +9,7 @@ class Message(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     sender_email = db.Column(db.String(255), db.ForeignKey(add_prefix_for_prod('users.email')), nullable=False)
-    recipient_email = db.Column(db.String(255), db.ForeignKey(add_prefix_for_prod('users.email')), nullable=True)  # Nullable for group messages
+    recipient_email = db.Column(db.String(255), db.ForeignKey(add_prefix_for_prod('users.email')), nullable=True)
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
@@ -19,7 +19,7 @@ class Message(db.Model):
 
     def to_dict(self):
         return {
-            'id': self.id,
+            'message_id': self.id,
             'sender_email': self.sender_email,
             'recipient_email': self.recipient_email,
             'content': self.content,
