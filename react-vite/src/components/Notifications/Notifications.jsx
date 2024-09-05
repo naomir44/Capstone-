@@ -9,6 +9,7 @@ const Notifications = () => {
 
   useEffect(() => {
     const socket = io('https://fair-share-3ygy.onrender.com');
+    // const socket = io('http://127.0.0.1:5000');
 
     if (userEmail) {
       socket.emit('join', { room: userEmail });

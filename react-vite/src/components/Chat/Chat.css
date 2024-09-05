@@ -118,3 +118,10 @@
 .chat-button:hover {
   background-color: #006bb3;
 }
+
+.new-message-indicator {
+  color: red;
+  font-weight: bold;
+  margin-left: 10px;
+  font-size: 12px;
+}
