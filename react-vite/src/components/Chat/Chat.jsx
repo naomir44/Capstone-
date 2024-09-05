@@ -14,9 +14,12 @@ const Chat = () => {
     const friendsList = useSelector(state => state.friends.list);
     const messages = useSelector(state => state.messages.list);
     const dispatch = useDispatch();
+    const notifications = useSelector(state => state.notifications.notifications)
+    console.log(notifications)
 
     useEffect(() => {
         const socketInstance = io('https://fair-share-3ygy.onrender.com');
+        // const socketInstance = io('http://127.0.0.1:5000');
         setSocket(socketInstance);
 
         socketInstance.on('connect', () => {
@@ -72,6 +75,10 @@ const Chat = () => {
             });
     };
 
+    const showNotificationInFriendsList = (friendEmail) => {
+        return notifications.some(notification => notification.notification_from === friendEmail && !notification.is_read);
+    };
+
     const sendPrivateMessage = () => {
         if (recipientEmail && message) {
             if (socket) {
@@ -109,17 +116,20 @@ const Chat = () => {
     return (
         <div className="chat-container">
             <div className="friends-list-chat">
-                {friendsList.map((friend) => (
-                    <div
-                        key={friend.email}
-                        className={`friend-item-chat ${friend.email === recipientEmail ? 'active' : ''}`}
-                        onClick={() => selectFriend(friend.email)}
-                    >
-                        <img src={friend.profile_picture} alt={friend.name} />
-                        <span>{friend.name}</span>
-                    </div>
-                ))}
-            </div>
+    {friendsList.map((friend) => (
+        <div
+            key={friend.email}
+            className={`friend-item-chat ${friend.email === recipientEmail ? 'active' : ''}`}
+            onClick={() => selectFriend(friend.email)}
+        >
+            <img src={friend.profile_picture} alt={friend.name} />
+            <span>{friend.name}</span>
+            {showNotificationInFriendsList(friend.email) && (
+                <span className="new-message-indicator">New Message</span>
+            )}
+        </div>
+    ))}
+</div>
             <div className="chat-content">
                 {recipientEmail && (
                     <>

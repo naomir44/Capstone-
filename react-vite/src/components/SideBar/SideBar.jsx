@@ -32,9 +32,10 @@ const SideBar = ({ sidebarOpen }) => {
 
   return (
     <>
-      {user &&
+      {user && (
         <div className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
-          <div className='profile'>
+          {/* Profile and Home/Logout buttons (fixed, not scrollable) */}
+          <div className="profile">
             <div className='profile-info'>
               <img
                 src={user?.profile_picture}
@@ -53,31 +54,35 @@ const SideBar = ({ sidebarOpen }) => {
               <button onClick={handlePictureUpdate}>Update Picture</button>
             )}
           </div>
-         <div className='home-and-logout'>
-         <div className='home-button'>
-            <NavLink to="/"><IoHomeSharp className='home-icon' />Home</NavLink>
+          <div className='home-and-logout'>
+            <div className='home-button'>
+              <NavLink to="/"><IoHomeSharp className='home-icon' />Home</NavLink>
+            </div>
+            <div className='logout-button'>
+              <button onClick={logout} className="navigation-button-logout">Log Out</button>
+            </div>
           </div>
-          <div className='logout-button'>
-            <button onClick={logout} className="navigation-button-logout">Log Out</button>
-          </div>
-         </div>
-          <div className='balances-button'>
-            <NavLink to={`/balances/${user?.id}/my-balance`}><BsCreditCardFill />Expenses</NavLink>
-          </div>
-          <div>
-            <NavLink to="/chat"><AiFillMessage />Chat <Notifications /></NavLink>
-          </div>
-          <div className='groups'>
-            <Groups />
-          </div>
-          <div>
-            <FriendsList />
-          </div>
-          <div className='friend-requests-on-sidebar'>
-            <AcceptFriend />
+
+          {/* Scrollable content */}
+          <div className="sidebar-content">
+            <div className='balances-button'>
+              <NavLink to={`/balances/${user?.id}/my-balance`}><BsCreditCardFill />Expenses</NavLink>
+            </div>
+            <div>
+              <NavLink to="/chat"><AiFillMessage />Chat <Notifications /></NavLink>
+            </div>
+            <div className='groups'>
+              <Groups />
+            </div>
+            <div>
+              <FriendsList />
+            </div>
+            <div className='friend-requests-on-sidebar'>
+              <AcceptFriend />
+            </div>
           </div>
         </div>
-      }
+      )}
     </>
   );
 };

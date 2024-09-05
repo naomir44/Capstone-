@@ -12,14 +12,14 @@
   border-right: 1px solid #e5e5e5;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
   transition: transform 0.3s ease, width 0.3s ease;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
-.sidebar .profile-info {
+/* .sidebar .profile-info {
   margin-bottom: 20px;
-}
+} */
 
 .sidebar.closed {
   transform: translateX(-100%);
@@ -97,4 +97,8 @@
 
 .balances-button {
   width: fit-content;
+}
+
+.sidebar-content > * {
+  margin-bottom: 20px;
 }

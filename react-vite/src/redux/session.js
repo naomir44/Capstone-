@@ -38,6 +38,7 @@ export const thunkLogin = (credentials) => async dispatch => {
     dispatch(setUser(data));
 
     const socket = io('https://fair-share-3ygy.onrender.com');
+    // const socket = io('http://127.0.0.1:5000');
     socket.emit('join', { room: data.email });
     console.log(`Joining notification room: notification_${data.email}`);
 
