@@ -96,6 +96,15 @@
   color: #555;
 }
 
+.required-label::after {
+  content: "*";
+  color: red;
+  margin-left: 5px;
+  font-size: 12px;
+  vertical-align: super;
+}
+
+
 /* .signup-profile-picture-preview {
   margin-bottom: 20px;
   text-align: center;

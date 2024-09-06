@@ -64,6 +64,7 @@
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
+  cursor: pointer;
 }
 
 .name {
@@ -99,6 +100,11 @@
   width: fit-content;
 }
 
+.chat-button-sidebar {
+  width: fit-content;
+}
+
 .sidebar-content > * {
   margin-bottom: 20px;
+  width: fit-content;
 }

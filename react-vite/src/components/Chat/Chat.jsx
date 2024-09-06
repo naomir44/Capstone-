@@ -10,6 +10,7 @@ const Chat = () => {
     const [socket, setSocket] = useState(null);
     const [recipientEmail, setRecipientEmail] = useState('');
     const [message, setMessage] = useState('');
+    const user = useSelector(state => state.session.user);
     const userEmail = useSelector(state => state.session.user.email);
     const friendsList = useSelector(state => state.friends.list);
     const messages = useSelector(state => state.messages.list);
@@ -135,7 +136,7 @@ const Chat = () => {
                     <>
                         <div id="messages" className="message-list">
                             {messages.map((msg, index) => (
-                                <div key={index} className="message-item">
+                                <div key={index} className={msg.sender_name === user.name ? "sender-message-item" : "message-item"}>
                                     <div className="message-sender">{msg.sender_name}</div>
                                     <div>{msg.content}</div>
                                     <div className="message-timestamp">{formatTimestamp(msg.timestamp)}</div>

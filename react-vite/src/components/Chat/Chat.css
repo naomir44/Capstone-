@@ -67,6 +67,13 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+.sender-message-item {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #f9d9a9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
 .message-sender {
   font-weight: bold;

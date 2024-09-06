@@ -68,7 +68,7 @@ const SideBar = ({ sidebarOpen }) => {
             <div className='balances-button'>
               <NavLink to={`/balances/${user?.id}/my-balance`}><BsCreditCardFill />Expenses</NavLink>
             </div>
-            <div>
+            <div className='chat-button-sidebar'>
               <NavLink to="/chat"><AiFillMessage />Chat <Notifications /></NavLink>
             </div>
             <div className='groups'>
