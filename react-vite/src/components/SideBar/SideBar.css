@@ -64,6 +64,7 @@
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
+  cursor: pointer;
 }
 
 .name {
@@ -101,4 +102,5 @@
 
 .sidebar-content > * {
   margin-bottom: 20px;
+  width: fit-content;
 }
